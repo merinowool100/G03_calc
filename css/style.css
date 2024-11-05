@@ -1,4 +1,9 @@
 /* 全体のレイアウト */
+h1{
+    font-size:42px;
+    margin-bottom: 15px;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -12,14 +17,13 @@ body {
     text-align: center;
     width: 80%;
     max-width: 400px;
-    margin-top: 20px;
     position: relative;
 }
 
 /* 残り問題数のレイアウト */
 #statusArea {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -28,8 +32,8 @@ body {
     font-size: 70px;
     color: green;
     position: absolute;
-    top: -80px; /* AnswerAreaの上に表示 */
-    left: 50%;
+    top: 305px; /* AnswerAreaの上に表示 */
+    left: 80%;
     transform: translateX(-50%);
     z-index: 10;
     display: none;
@@ -45,11 +49,12 @@ body {
     display: flex;
     align-items: center;
     gap: 10px; /* 問題と入力エリアの間にスペース */
-    margin-bottom: 20px;
+    margin-top:10px;
+    margin-bottom: 5px;
 }
 
 #problemDisplay {
-    font-size: 24px;
+    font-size: 46px;
 }
 
 /* 解答入力エリアとボタンを横並びに */
@@ -60,8 +65,17 @@ body {
     font-size: 20px;
 }
 
+#btnArea{
+    display:flex;
+    gap: 10px;
+    /* align-items: center; */
+    margin: 10px;
+}
+
+
 /* 解答ボタンのスタイル */
 #submitAnswerButton, #clearButton {
+    width:155px;
     height: 40px;
     margin:0;
     padding: 10px 10px;
@@ -70,7 +84,7 @@ body {
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 #submitAnswerButton:hover, #clearButton:hover {
@@ -88,6 +102,16 @@ body {
 #numberButtons button {
     font-size: 20px;
     padding: 10px 0;
+    border-radius: 10px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+button:active {
+    transform: translate(0, 2px);
+    /* border-bottom: none; */
 }
 
 /* 0のボタンを特別に扱う */

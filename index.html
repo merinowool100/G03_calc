@@ -1,62 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
 </head>
+
 <body>
     <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
-<body>
-    <h1>二桁の足し算・引き算問題</h1>
-    
-    <div id="container">
-        <!-- フィードバック表示エリア -->
-        <div id="feedback">〇</div>
+    <html lang="en">
 
-        <!-- 問題の表示エリアと入力エリアを横並びに配置 -->
-        <div id="problemDisplayContainer">
-            <div id="problemDisplay"></div>
-            <div id="answerArea">
-                <input type="text" id="answerInput" readonly placeholder="">
-                <button id="submitAnswerButton">Answer</button>
-                <button id="clearButton">C</button>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <h1>Calc. challenge</h1>
+
+        <div id="container">
+            <!-- フィードバック表示エリア -->
+            <div id="feedback">〇</div>
+            <canvas class="canvas"></canvas>
+            <!-- 問題の表示エリア -->
+            <div id="problemDisplayContainer">
+                <div id="problemDisplay"></div>
+                <div id="answerArea">
+                    <input type="text" id="answerInput" readonly placeholder="">
+                </div>
+            </div>
+            <div id="btnArea">
+                <button class="btn" id="submitAnswerButton">Answer</button>
+                <button class="btn" id="clearButton">C</button>
+            </div>
+
+            <!-- 数字ボタン -->
+            <div id="numberButtons">
+                <button onclick="appendNumber(1)">1</button>
+                <button onclick="appendNumber(2)">2</button>
+                <button onclick="appendNumber(3)">3</button>
+                <button onclick="appendNumber(4)">4</button>
+                <button onclick="appendNumber(5)">5</button>
+                <button onclick="appendNumber(6)">6</button>
+                <button onclick="appendNumber(7)">7</button>
+                <button onclick="appendNumber(8)">8</button>
+                <button onclick="appendNumber(9)">9</button>
+                <button id="numberButton0" onclick="appendNumber(0)">0</button>
+            </div>
+
+            <!-- 残り問題数 -->
+            <div id="statusArea">
+                <p id="remainingDisplay">残りの問題数: 10</p>
             </div>
         </div>
 
-        <!-- 数字ボタン -->
-        <div id="numberButtons">
-            <button onclick="appendNumber(1)">1</button>
-            <button onclick="appendNumber(2)">2</button>
-            <button onclick="appendNumber(3)">3</button>
-            <button onclick="appendNumber(4)">4</button>
-            <button onclick="appendNumber(5)">5</button>
-            <button onclick="appendNumber(6)">6</button>
-            <button onclick="appendNumber(7)">7</button>
-            <button onclick="appendNumber(8)">8</button>
-            <button onclick="appendNumber(9)">9</button>
-            <button id="numberButton0" onclick="appendNumber(0)">0</button>
-        </div>
-
-        <!-- 残り問題数 -->
-        <div id="statusArea">
-            <p id="remainingDisplay">残りの問題数: 10</p>
-        </div>
-    </div>
 
 
+        <script src="calc.js"></script> <!-- 上記のJavaScriptファイルを読み込み -->
+    </body>
 
-    <script src="calc.js"></script> <!-- 上記のJavaScriptファイルを読み込み -->
-</body>
-</html>
+    </html>
 
 
 
@@ -65,4 +72,5 @@
 
     <script src="./js/calc.js"></script>
 </body>
+
 </html>
