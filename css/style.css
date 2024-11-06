@@ -1,126 +1,164 @@
-/* 全体のレイアウト */
-h1{
-    font-size:42px;
-    margin-bottom: 15px;
-}
+        /* 全体のレイアウト */
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
 
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
-}
-#container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 80%;
-    max-width: 400px;
-    position: relative;
-}
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
 
-/* 残り問題数のレイアウト */
-#statusArea {
-    width: 100%;
-    margin-top: 20px;
-    text-align: center;
-}
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            position: relative;
+        }
 
-/* フィードバック表示用のスタイル（絶対配置で上部に固定） */
-#feedback {
-    font-size: 70px;
-    color: green;
-    position: absolute;
-    top: 305px; /* AnswerAreaの上に表示 */
-    left: 80%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: none;
-    transition: opacity 1s ease-out;
-}
+        /* 残り問題数のレイアウト */
+        #statusArea {
+            width: 100%;
+            text-align: center;
+        }
 
-.hidden {
-    opacity: 0;
-}
+        /* フィードバック表示用のスタイル（絶対配置で上部に固定） */
+        #feedback {
+            font-size: 140px;
+            color: green;
+            position: absolute;
+            top: 150px;
+            /* AnswerAreaの上に表示 */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: none;
+            transition: opacity 1s ease-out;
+        }
 
-/* 問題と入力エリアを横並びに配置 */
-#problemDisplayContainer {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* 問題と入力エリアの間にスペース */
-    margin-top:10px;
-    margin-bottom: 5px;
-}
+        .hidden {
+            opacity: 0;
+        }
 
-#problemDisplay {
-    font-size: 46px;
-}
+        /* 問題と入力エリアを横並びに配置 */
+        #problemDisplayContainer {
+            height: 54px;
+            margin:10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
 
-/* 解答入力エリアとボタンを横並びに */
-#answerArea {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    font-size: 20px;
-}
+            /* 問題と入力エリアの間にスペース */
+        }
 
-#btnArea{
-    display:flex;
-    gap: 10px;
-    /* align-items: center; */
-    margin: 10px;
-}
+        #problemDisplay {
+            font-size: 44px;
+        }
+
+        /* 解答入力エリアとボタンを横並びに */
+        #answerArea {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btnArea {
+            display: flex;
+            gap: 10px;
+            /* align-items: center; */
+            margin-bottom: 10px;
+        }
 
 
-/* 解答ボタンのスタイル */
-#submitAnswerButton, #clearButton {
-    width:155px;
-    height: 40px;
-    margin:0;
-    padding: 10px 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 10px;
-}
+        /* 解答ボタンのスタイル */
+        #submitAnswerButton,
+        #clearButton {
+            width: 155px;
+            height: 40px;
+            margin: 0;
+            padding: 10px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
 
-#submitAnswerButton:hover, #clearButton:hover {
-    background-color: #45a049;
-}
+        #submitAnswerButton:hover,
+        #clearButton:hover {
+            background-color: #45a049;
+        }
 
-/* 数字ボタンのレイアウト */
-#numberButtons {
-    display: grid;
-    height: 200px;
-    grid-template-columns: repeat(3, 100px);
-    gap: 10px;
-}
+        /* 数字ボタンのレイアウト */
+        #numberButtons {
+            display: grid;
+            height: 200px;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+        }
 
-#numberButtons button {
-    font-size: 20px;
-    padding: 10px 0;
-    border-radius: 10px;
-}
+        #numberButtons button {
+            font-size: 20px;
+            padding: 10px 0;
+            border-radius: 10px;
+        }
 
-button:hover {
-    opacity: 0.8;
-}
+        button:hover {
+            opacity: 0.8;
+        }
 
-button:active {
-    transform: translate(0, 2px);
-    /* border-bottom: none; */
-}
+        button:active {
+            transform: translate(0, 2px);
+            /* border-bottom: none; */
+        }
 
-/* 0のボタンを特別に扱う */
-#numberButton0 {
-    grid-column: span 3;
-}
+        /* 0のボタンを特別に扱う */
+        #numberButton0 {
+            grid-column: span 3;
+        }
 
-#answerInput{
-    width: 50px;
-    height:40px;
-    text-align: center;
-}
+        #answerInput {
+            width: 50px;
+            height: 54px;
+            text-align: center;
+            border: none;
+        }
+
+        .end {
+            height: 30px;
+            font-size: 38px;
+            text-align: center;
+        }
+
+        #start {
+            width: 155px;
+            height: 40px;
+            margin: 0;
+            padding: 10px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #cd0000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+
+
+        #reset{
+            width: 155px;
+            height: 40px;
+            margin: 0;
+            padding: 10px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #fff;
+            color: black;
+            border-color :red;
+            border-radius: 10px;
+        }

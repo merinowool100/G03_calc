@@ -1,329 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calc. Challenge</title>
-    <style>
-        /* 全体のレイアウト */
-        h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: Arial, sans-serif;
-        }
-
-        #container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            width: 80%;
-            max-width: 400px;
-            position: relative;
-        }
-
-        #statusArea {
-            width: 100%;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        #feedback {
-            font-size: 70px;
-            color: green;
-            position: absolute;
-            top: 305px;
-            left: 80%;
-            transform: translateX(-50%);
-            z-index: 10;
-            display: none;
-            transition: opacity 1s ease-out;
-        }
-
-        .hidden {
-            opacity: 0;
-        }
-
-        #problemDisplayContainer {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-
-        #problemDisplay {
-            font-size: 46px;
-        }
-
-        #answerArea {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            font-size: 20px;
-        }
-
-        #btnArea {
-            display: flex;
-            gap: 10px;
-            margin: 10px;
-        }
-
-        #submitAnswerButton,
-        #clearButton,
-        #startButton {
-            width: 155px;
-            height: 40px;
-            margin: 0;
-            padding: 10px 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 10px;
-        }
-
-        #submitAnswerButton:hover,
-        #clearButton:hover,
-        #startButton:hover {
-            background-color: #45a049;
-        }
-
-        #numberButtons {
-            display: grid;
-            height: 200px;
-            grid-template-columns: repeat(3, 100px);
-            gap: 10px;
-        }
-
-        #numberButtons button {
-            font-size: 20px;
-            padding: 10px 0;
-            border-radius: 10px;
-        }
-
-        #numberButton0 {
-            grid-column: span 3;
-        }
-
-        #answerInput {
-            width: 50px;
-            height: 40px;
-            text-align: center;
-        }
-
-        .end {
-            height: 54px;
-            font-size: 38px;
-            text-align: center;
-        }
-
-        #timeDisplay {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 24px;
-        }
-
-        #leaderboard {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    </style>
+    <title>Document</title>
 </head>
-
 <body>
-    <h1>Calc. Challenge</h1>
-
-    <div id="container">
-        <button id="startButton">Start</button>
-        <div id="feedback">〇</div>
-        <canvas class="canvas"></canvas>
-        <div id="problemDisplayContainer">
-            <div id="problemDisplay"></div>
-            <div id="answerArea">
-                <input type="text" id="answerInput" readonly placeholder="">
-            </div>
-        </div>
-
-        <div id="btnArea">
-            <button id="submitAnswerButton">Answer</button>
-            <button id="clearButton">C</button>
-        </div>
-
-        <div id="numberButtons">
-            <button onclick="appendNumber(1)">1</button>
-            <button onclick="appendNumber(2)">2</button>
-            <button onclick="appendNumber(3)">3</button>
-            <button onclick="appendNumber(4)">4</button>
-            <button onclick="appendNumber(5)">5</button>
-            <button onclick="appendNumber(6)">6</button>
-            <button onclick="appendNumber(7)">7</button>
-            <button onclick="appendNumber(8)">8</button>
-            <button onclick="appendNumber(9)">9</button>
-            <button id="numberButton0" onclick="appendNumber(0)">0</button>
-        </div>
-
-        <div id="statusArea">
-            <p id="remainingDisplay">残りの問題数: 10</p>
-        </div>
-
-        <div id="timeDisplay">Time: 0s</div>
-
-        <div id="leaderboard">
-            <h3>Top 3 Times</h3>
-            <ul id="leaderboardList">
-                <li>1. -</li>
-                <li>2. -</li>
-                <li>3. -</li>
-            </ul>
-        </div>
-    </div>
+    
+<h1>カウントアップ</h1>
+    <p id="timer">0</p>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
 
     <script>
-        const problems = [];
-        let currentProblemIndex = 0;
-        let startTime = null;
-        let timerInterval = null;
-        let bestTimes = JSON.parse(localStorage.getItem("bestTimes")) || [];
+        let timeElement = document.getElementById("timer");
+        let startButton = document.getElementById("start");
+        let stopButton = document.getElementById("stop");
 
-        // 2問の計算問題を生成
-        for (let i = 0; i < 2; i++) {
-            let num1, num2, isAddition;
-            do {
-                num1 = Math.floor(Math.random() * 90) + 10;
-                num2 = Math.floor(Math.random() * 90) + 10;
-                isAddition = Math.random() > 0.5;
-            } while ((isAddition && num1 + num2 > 100) || (!isAddition && num1 < num2));
+        let timer = 0;
+        let interval;
 
-            if (isAddition) {
-                problems.push({ question: `${num1} + ${num2}`, answer: num1 + num2, mother: num1 });
-            } else {
-                problems.push({ question: `${num1} - ${num2}`, answer: num1 - num2, mother: num1 });
-            }
-        }
+// Startボタンのイベント
+startButton.addEventListener("click", () => {
+    // タイマーがすでに動いていない場合のみ動かす
+    if (!interval) {
+        interval = setInterval(() => {
+            timer++; // カウントアップ
+            timerElement.textContent = timer; // 画面に表示
+        }, 1000); // 1秒ごとにカウントアップ
+    }
+});
 
-        // 残り問題数の更新
-        function updateRemainingDisplay() {
-            const remainingProblems = problems.length - currentProblemIndex;
-            document.getElementById("remainingDisplay").innerText = `残りの問題数: ${remainingProblems}`;
-        }
+// Stopボタンのイベント
+stopButton.addEventListener("click", () => {
+    if (interval) {
+        clearInterval(interval); // カウントアップを停止
+        interval = null; // intervalをリセット
+    }
+});
 
-        // 時間を表示
-        function updateTimer() {
-            const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-            document.getElementById("timeDisplay").innerText = `Time: ${elapsedTime}s`;
-        }
-
-        // 時間カウントアップ
-        function startTimer() {
-            startTime = Date.now();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        // 問題を表示
-        function showProblem() {
-            const currentProblem = problems[currentProblemIndex];
-            document.getElementById("problemDisplay").innerText = `Q: ${currentProblem.question} =`;
-            updateRemainingDisplay();
-        }
-
-        // 回答チェック
-        function checkAnswer() {
-            const currentProblem = problems[currentProblemIndex];
-            const userAnswer = parseInt(document.getElementById("answerInput").value);
-
-            if (userAnswer === currentProblem.answer) {
-                showFeedback(true);
-                currentProblemIndex++;
-            } else {
-                showFeedback(false);
-                const incorrectProblem = problems.splice(currentProblemIndex, 1)[0];
-                problems.push(incorrectProblem);
-            }
-            document.getElementById("answerInput").value = "";
-        }
-
-        // 数字入力
-        function appendNumber(number) {
-            const answerInput = document.getElementById("answerInput");
-            answerInput.value += number;
-        }
-
-        // 正解・不正解フィードバック
-        function showFeedback(isCorrect) {
-            const feedback = document.getElementById("feedback");
-            const currentProblem = problems[currentProblemIndex];
-
-            if (isCorrect) {
-                feedback.innerText = "Correct";
-                feedback.style.color = "green";
-            } else {
-                feedback.innerText = "Wrong";
-                feedback.style.color = "red";
-                feedback.innerText += ` ${currentProblem.answer}`;
-            }
-
-            feedback.style.display = "block";
-            setTimeout(() => {
-                feedback.style.display = "none";
-                if (currentProblemIndex < problems.length) {
-                    showProblem();
-                } else {
-                    finishChallenge();
-                }
-            }, 1500);
-        }
-
-        // チャレンジ終了
-        function finishChallenge() {
-            clearInterval(timerInterval);
-
-            const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-            const updatedTimes = [...bestTimes, timeTaken].sort((a, b) => a - b).slice(0, 3);
-            localStorage.setItem("bestTimes", JSON.stringify(updatedTimes));
-
-            // leaderboard表示
-            const leaderboardList = document.getElementById("leaderboardList");
-            leaderboardList.innerHTML = updatedTimes.map((time, index) => `<li>${index + 1}. ${time}s</li>`).join("");
-
-            const completeMessage = document.createElement("div");
-            completeMessage.setAttribute("class", "end");
-            completeMessage.innerText = updatedTimes[0] === timeTaken ? "Record Updated!" : "Mission complete!";
-            document.getElementById("problemDisplayContainer").appendChild(completeMessage);
-            document.getElementById("submitAnswerButton").disabled = true;
-        }
-
-        // スタートボタンをクリック
-        document.getElementById("startButton").addEventListener("click", () => {
-            document.getElementById("startButton").disabled = true;
-            startTimer();
-            showProblem();
-        });
-
-        // 回答を送信
-        document.getElementById("submitAnswerButton").addEventListener("click", checkAnswer);
-
-        // 数字ボタンを処理
-        document.addEventListener("keydown", (event) => {
-            if (event.key >= "0" && event.key <= "9") {
-                appendNumber(event.key);
-            } else if (event.key === "Backspace") {
-                const answerInput = document.getElementById("answerInput");
-                answerInput.value = answerInput.value.slice(0, -1);
-            } else if (event.key === "Enter") {
-                checkAnswer();
-            }
-        });
     </script>
-</body>
 
+
+</body>
 </html>
