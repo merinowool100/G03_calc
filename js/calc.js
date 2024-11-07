@@ -73,7 +73,7 @@ if (!isStarted) {
 
 // 問題を表示する関数
 function showProblem() {
-    if(problems.length === 0 || currentProblemIndex >= problems.length){
+    if (problems.length === 0 || currentProblemIndex >= problems.length) {
         return;
     }
     const currentProblem = problems[currentProblemIndex];
@@ -128,10 +128,10 @@ document.getElementById("clearButton").addEventListener("click", () => {
 
 // 回答をチェックする関数
 function checkAnswer() {
-    if(document.getElementById("answerInput").disabled) return;
+    if (document.getElementById("answerInput").disabled) return;
     const currentProblem = problems[currentProblemIndex];
     const userAnswer = parseInt(document.getElementById("answerInput").value);
-    if(isNaN(userAnswer)){
+    if (isNaN(userAnswer)) {
         showFeedback(false);
         return;
     }
@@ -193,7 +193,7 @@ function showFeedback(isCorrect) {
                 document.getElementById("answerInput").disabled = false;
             } else {
                 isEnd = true;
-                document.getElementById("remainingDisplay").innerText = "残りの問題数: 0";
+                document.getElementById("remainingDisplay").innerText = "0";
                 document.getElementById("problemDisplay").remove();
                 document.getElementById("answerArea").remove();
                 const completeMessage = document.createElement("div");
@@ -201,6 +201,8 @@ function showFeedback(isCorrect) {
                 completeMessage.innerText = "Mission complete!!";
                 document.getElementById("problemDisplayContainer").appendChild(completeMessage);
                 document.getElementById("submitAnswerButton").disabled = true;
+                // タイマーが終了した際にベスト記録を更新
+                updateBestRecord(); // ここでベスト記録を更新
             }
         }, 100); // フェードアウト後に完全非表示
     }, 200); // 0.3秒間Feedback messageを表示してからフェードアウト
@@ -214,25 +216,25 @@ function updateTimer() {
     let hundredths = milliseconds % 100;
     // タイマーを表示
     document.getElementById("timer-display").textContent =
-        `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}:${String(hundredths).padStart(2,"0")} `
+        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")} `
 }
 
 // タイマーの更新をする関数
-function startTimer(){
-    if(timeInterval)clearInterval(timeInterval);
-    timerInterval = setInterval(()=>{
-        if(isEnd){
+function startTimer() {
+    if (timeInterval) clearInterval(timeInterval);
+    timerInterval = setInterval(() => {
+        if (isEnd) {
             clearInterval(timerInterval);
-        } else{
+        } else {
             milliseconds++;
             updateTimer();
         }
-    },10);
+    }, 10);
 }
 
 // スタートボタン
 document.getElementById("start").addEventListener("click", () => {
-    if(isStarted) return;
+    if (isStarted) return;
     isStarted = true;
     isEnd = false;
     startTimer();
@@ -243,7 +245,7 @@ document.getElementById("start").addEventListener("click", () => {
 
 // リセットボタン
 document.getElementById("reset").addEventListener("click", () => {
-    if(timeInterval){
+    if (timeInterval) {
         clearInterval(timeInterval);
         timeInterval = null;
     }
@@ -260,4 +262,42 @@ document.getElementById("reset").addEventListener("click", () => {
     // createQ();
     cells();
     // showProblem();
+});
+
+// ベスト記録を更新する関数
+function updateBestRecord() {
+    const currentRecord = milliseconds; // 現在の記録
+
+    // localStorageからベスト記録を取得
+    let bestRecord = localStorage.getItem('bestRecord');
+
+    if (!bestRecord || currentRecord < bestRecord) {
+        // 新しいベスト記録が出た場合
+        localStorage.setItem('bestRecord', currentRecord); // 更新
+        bestRecord = currentRecord;
+    }
+
+    // ベスト記録を画面に表示
+    displayBestRecord(bestRecord);
+}
+
+// ベスト記録を表示する関数
+function displayBestRecord(bestRecord) {
+    let minutes = Math.floor((bestRecord % 360000) / 6000);
+    let seconds = Math.floor((bestRecord % 6000) / 100);
+    let hundredths = bestRecord % 100;
+
+    document.getElementById("best-record").textContent =
+        `Best: ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")}`;
+}
+
+
+// ページが読み込まれたときにベスト記録を表示
+window.addEventListener("load", () => {
+    const bestRecord = localStorage.getItem('bestRecord');
+    if (bestRecord) {
+        displayBestRecord(bestRecord);
+    } else {
+        displayBestRecord(0); // 初めての場合は0秒からスタート
+    }
 });
