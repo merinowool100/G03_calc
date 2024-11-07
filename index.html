@@ -9,15 +9,21 @@
 </head>
 
 <body>
-    <h1>Calc. challenge</h1>
-
+    <div class="header">
+        <div class="top" style="font-weight: bold;">Lv.9</div>
+        <div class="spacer"></div>
+        <div class="sub-label" style="font-size:18px;">残</div>
+        <div class="main-label" id="remainingDisplay" style="font-size:30px;">10</div>
+        <div class="spacer"></div>
+        <div class="main-label" id="timer-display" style="font-size:30px;">00:00:00</div>
+    </div>
     <div id="container">
         <div id="feedback"></div>
         <canvas class="canvas"></canvas>
         <div id="problemDisplayContainer">
             <div id="problemDisplay"></div>
             <div id="answerArea">
-                <input type="text" id="answerInput" readonly placeholder=""  style="font-size: 44px;">
+                <input type="text" id="answerInput" readonly placeholder="" style="font-size: 44px;">
             </div>
         </div>
         <div class="btnArea">
@@ -38,11 +44,7 @@
             <button onclick="appendNumber(9)">9</button>
             <button id="numberButton0" onclick="appendNumber(0)">0</button>
         </div>
-
-        <!-- 残り問題数 -->
-        <div id="statusArea">
-            <p id="remainingDisplay">残りの問題数: 10</p>
-        </div>
+<div style="height:30px;"></div>
     </div>
     <div class="btnArea">
         <button class="btn" id="start">Start</button>
