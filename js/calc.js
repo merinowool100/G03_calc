@@ -1,23 +1,23 @@
 // 問題を格納するリスト
 const problems = [];
-let currentProblemIndex = 0; // 現在の問題のインデックス
+let currentProblemIndex = 0;
 
 // StartとEndのフラグ
 let isStarted = false;
 let isEnd = false;
 
-// 時間計測用の初期値
-let timeInterval;
+// タイマーの初期値
+let timerInterval;
 let milliseconds = 0;
 
 // 二桁の足し算と引き算の問題をランダムに作成
 function createQ() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1; i++) {
         let num1, num2, isAddition;
         do {
-            num1 = Math.floor(Math.random() * 90) + 10; // 10から99の範囲
+            num1 = Math.floor(Math.random() * 90) + 10;
             num2 = Math.floor(Math.random() * 90) + 10;
-            isAddition = Math.random() > 0.5; // 足し算と引き算を半々で選ぶ
+            isAddition = Math.random() > 0.5;
         } while ((isAddition && num1 + num2 > 100) || (!isAddition && num1 < num2));
 
         if (isAddition) {
@@ -48,9 +48,9 @@ function cells() {
         context.strokeStyle = "gray";
         context.lineWidth = 1;
         context.beginPath();
-        context.moveTo(0, i * gridSize); // 横線
+        context.moveTo(0, i * gridSize);
         context.lineTo(320, i * gridSize);
-        context.moveTo(i * gridSize, 0); // 縦線
+        context.moveTo(i * gridSize, 0);
         context.lineTo(i * gridSize, 320);
         context.closePath();
         context.stroke();
@@ -64,7 +64,7 @@ function cells() {
     context.lineTo(160, 320);
     context.closePath();
     context.stroke();
-};
+}
 
 // Startしたらマス目を描画
 if (!isStarted) {
@@ -73,24 +73,18 @@ if (!isStarted) {
 
 // 問題を表示する関数
 function showProblem() {
-    if (problems.length === 0 || currentProblemIndex >= problems.length) {
-        return;
-    }
+    if (problems.length === 0 || currentProblemIndex >= problems.length) return;
     const currentProblem = problems[currentProblemIndex];
     if (isStarted) {
         document.getElementById("problemDisplay").innerText = `Q: ${currentProblem.question} =`;
     }
-    updateRemainingDisplay(); // 残りの問題数を更新
+    updateRemainingDisplay();
 
-
-    // 描画用に数字を設定
     const rows = Math.floor(currentProblem.mother / 10);
     const residual = currentProblem.mother % 10;
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height); //描く前に一回描画を消す
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    // 問題の四角を描画する
     if (isStarted) {
-        // 10のかたまりの数を塗りつぶす
         context.fillStyle = "rgba(255,150,0,0.5)";
         context.beginPath();
         context.moveTo(0, 0);
@@ -100,7 +94,6 @@ function showProblem() {
         context.closePath();
         context.fill();
 
-        // 1の位の数の四角を描画する
         context.fillStyle = "rgba(255,150,0,0.5)";
         context.beginPath();
         context.moveTo(rows * 32, 0);
@@ -110,25 +103,20 @@ function showProblem() {
         context.closePath();
         context.fill();
     }
-    // 上記の四角の上からマス目を再度描画する
     cells();
 }
 
-// 数字ボタンで入力を追加する関数
 function appendNumber(number) {
     const answerInput = document.getElementById("answerInput");
     answerInput.value += number;
 }
 
-// クリアボタンを押したら回答入力をクリア
 document.getElementById("clearButton").addEventListener("click", () => {
     document.getElementById("answerInput").value = "";
 });
 
-
-// 回答をチェックする関数
 function checkAnswer() {
-    if (document.getElementById("answerInput").disabled) return;
+    // if (document.getElementById("answerInput").disabled) return;
     const currentProblem = problems[currentProblemIndex];
     const userAnswer = parseInt(document.getElementById("answerInput").value);
     if (isNaN(userAnswer)) {
@@ -136,92 +124,81 @@ function checkAnswer() {
         return;
     }
 
-    if (!isNaN(userAnswer) && userAnswer === currentProblem.answer) {
-        showFeedback(true); // 正解のフィードバック表示
-        currentProblemIndex++; // 正解の場合、次の問題に進む
+    if (userAnswer === currentProblem.answer) {
+        showFeedback(true);
+        currentProblemIndex++;
     } else {
-        showFeedback(false); // 不正解のフィードバック表示
+        showFeedback(false);
         const incorrectProblem = problems.splice(currentProblemIndex, 1)[0];
-        problems.push(incorrectProblem); // 間違えた問題をリストの最後に追加
+        problems.push(incorrectProblem);
     }
 
-    // 回答欄をクリア
     document.getElementById("answerInput").value = "";
-    document.getElementById("answerInput").disabled = true;
+    // document.getElementById("answerInput").disabled = true;
 }
 
-// イベントリスナーの設定
 document.getElementById("submitAnswerButton").addEventListener("click", checkAnswer);
 
-// テンキーで入力を処理する
 document.addEventListener("keydown", (event) => {
-    if (event.key >= "0" && event.key <= "9") { // 数字キーの場合
-        appendNumber(event.key); // その数字を入力欄に追加
-    } else if (event.key === "Backspace") { // バックスペースの場合
+    if (event.key >= "0" && event.key <= "9") {
+        appendNumber(event.key);
+    } else if (event.key === "Backspace") {
         const answerInput = document.getElementById("answerInput");
-        answerInput.value = answerInput.value.slice(0, -1); // 最後の文字を削除
-    } else if (event.key === "Enter") { // エンターキーの場合
-        checkAnswer(); // 回答をチェック
-    } else if (event.key === "Delete") { // デリートキーの場合
-        document.getElementById("answerInput").value = ""; // 回答を消去
+        answerInput.value = answerInput.value.slice(0, -1);
+    } else if (event.key === "Enter") {
+        checkAnswer();
+    } else if (event.key === "Delete") {
+        document.getElementById("answerInput").value = "";
     }
 });
 
-// 正解・不正解のフィードバックを表示する関数
 function showFeedback(isCorrect) {
     const feedback = document.getElementById("feedback");
-    const currentProblem = problems[currentProblemIndex];
-
-    if (isCorrect) {
-        feedback.innerText = "Correct"; // 正解のフィードバック
-        feedback.style.color = "green";
-    } else {
-        feedback.innerText = "Wrong"; // 不正解のフィードバック
-        feedback.style.color = "red";
-    }
-
+    feedback.innerText = isCorrect ? "Correct" : "Wrong";
+    feedback.style.color = isCorrect ? "green" : "red";
     feedback.style.display = "block";
     feedback.classList.remove("hidden");
 
-    // フェードアウト開始
     setTimeout(() => {
         feedback.classList.add("hidden");
         setTimeout(() => {
-            feedback.style.display = "none"; // 完全に非表示
+            feedback.style.display = "none";
             if (currentProblemIndex < problems.length) {
-                showProblem(); // 次の問題を表示
-                document.getElementById("answerInput").disabled = false;
+                showProblem();
+                // document.getElementById("answerInput").disabled = false;
             } else {
                 isEnd = true;
                 document.getElementById("remainingDisplay").innerText = "0";
-                document.getElementById("problemDisplay").remove();
-                document.getElementById("answerArea").remove();
-                const completeMessage = document.createElement("div");
-                completeMessage.setAttribute("class", "end")
-                completeMessage.innerText = "Mission complete!!";
-                document.getElementById("problemDisplayContainer").appendChild(completeMessage);
-                document.getElementById("submitAnswerButton").disabled = true;
-                // タイマーが終了した際にベスト記録を更新
-                updateBestRecord(); // ここでベスト記録を更新
-            }
-        }, 100); // フェードアウト後に完全非表示
-    }, 200); // 0.3秒間Feedback messageを表示してからフェードアウト
-}
-console.log(feedback);
+                
+                // Mission completeメッセージを作成して追加
+                const completeMessageBox = document.createElement("div");
+                completeMessageBox.classList.add("complete-message-box");
+                completeMessageBox.innerHTML = `
+                    <div class="complete-message">
+                        <p>Mission complete!!</p>
+                    </div>
+                `;
+                document.getElementById("problemDisplayContainer").appendChild(completeMessageBox); // 親要素に追加
 
-// タイマーの表示を更新する関数
+                // Submitボタンを無効にする
+                // document.getElementById("submitAnswerButton").disabled = true;
+                
+                updateBestRecord();  // ベストレコードを更新
+            }
+        }, 100);
+    }, 200);
+}
+
 function updateTimer() {
     let minutes = Math.floor((milliseconds % 360000) / 6000);
     let seconds = Math.floor((milliseconds % 6000) / 100);
     let hundredths = milliseconds % 100;
-    // タイマーを表示
     document.getElementById("timer-display").textContent =
-        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")} `
+        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")}`;
 }
 
-// タイマーの更新をする関数
 function startTimer() {
-    if (timeInterval) clearInterval(timeInterval);
+    if (timerInterval) clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         if (isEnd) {
             clearInterval(timerInterval);
@@ -232,7 +209,49 @@ function startTimer() {
     }, 10);
 }
 
-// スタートボタン
+function updateBestRecord() {
+    const currentRecord = milliseconds;
+    // localStorageからbestRecordを取得。nullの場合は0をデフォルトにする
+    let bestRecord = localStorage.getItem('bestRecord');
+    
+    if (bestRecord === null) {
+        bestRecord = 0;  // bestRecordがnullの場合は0に設定
+    } else {
+        bestRecord = parseInt(bestRecord, 10);  // 整数として扱う
+    }
+
+    // 現在の記録が最良記録よりも短ければ更新する
+    if (currentRecord < bestRecord || bestRecord === 0) {
+        localStorage.setItem('bestRecord', currentRecord);  // 新しいbestRecordを保存
+        bestRecord = currentRecord;  // 変数に最良記録を格納
+    }
+
+    displayBestRecord(bestRecord);  // ベストレコードを表示
+}
+
+function displayBestRecord(bestRecord) {
+    if (isNaN(bestRecord)) {
+        bestRecord = 0;  // 万が一bestRecordがNaNであれば0に設定
+    }
+
+    // 時間としてフォーマットする
+    let minutes = Math.floor((bestRecord % 360000) / 6000);
+    let seconds = Math.floor((bestRecord % 6000) / 100);
+    let hundredths = bestRecord % 100;
+
+    document.getElementById("best-record").textContent =
+        `Best: ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")}`;
+}
+
+window.addEventListener("load", () => {
+    const bestRecord = localStorage.getItem('bestRecord');
+    if (bestRecord) {
+        displayBestRecord(bestRecord); // ページロード時にベストレコード表示
+    } else {
+        displayBestRecord(0);
+    }
+});
+
 document.getElementById("start").addEventListener("click", () => {
     if (isStarted) return;
     isStarted = true;
@@ -243,61 +262,33 @@ document.getElementById("start").addEventListener("click", () => {
     showProblem();
 });
 
-// リセットボタン
 document.getElementById("reset").addEventListener("click", () => {
-    if (timeInterval) {
-        clearInterval(timeInterval);
-        timeInterval = null;
-    }
-    problems.length = 0;
-    currentProblemIndex = 0;
-    milliseconds = 0;
+    clearInterval(timerInterval);
+    timerInterval = null;
     isStarted = false;
-    isEnd = true;
+    isEnd = false;  // ゲーム終了フラグをリセット
+    milliseconds = 0;
+    currentProblemIndex = 0;
+    problems.length = 0;
+    // document.getElementById("submitAnswerButton").disabled = false;  // ボタンを再度有効化
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    document.getElementById("answerInput").value = "";  // 入力欄をクリア
-    document.getElementById("problemDisplay").innerText = "";  // 問題表示をクリア
-    document.getElementById("remainingDisplay").innerText = "10";  // 残り問題数をリセット
+    document.getElementById("answerInput").value = "";
+    document.getElementById("problemDisplay").innerText = "";
+    document.getElementById("remainingDisplay").innerText = "10";
     document.getElementById("timer-display").textContent = "00:00:00";
-    // createQ();
     cells();
-    // showProblem();
-});
 
-// ベスト記録を更新する関数
-function updateBestRecord() {
-    const currentRecord = milliseconds; // 現在の記録
-
-    // localStorageからベスト記録を取得
-    let bestRecord = localStorage.getItem('bestRecord');
-
-    if (!bestRecord || currentRecord < bestRecord) {
-        // 新しいベスト記録が出た場合
-        localStorage.setItem('bestRecord', currentRecord); // 更新
-        bestRecord = currentRecord;
+    // Mission completeメッセージとボックスを削除
+    const completeMessageBox = document.querySelector(".complete-message-box");
+    if (completeMessageBox) {
+        completeMessageBox.remove();  // ここで削除
     }
 
-    // ベスト記録を画面に表示
-    displayBestRecord(bestRecord);
-}
-
-// ベスト記録を表示する関数
-function displayBestRecord(bestRecord) {
-    let minutes = Math.floor((bestRecord % 360000) / 6000);
-    let seconds = Math.floor((bestRecord % 6000) / 100);
-    let hundredths = bestRecord % 100;
-
-    document.getElementById("best-record").textContent =
-        `Best: ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")}`;
-}
-
-
-// ページが読み込まれたときにベスト記録を表示
-window.addEventListener("load", () => {
+    // Best recordの再表示
     const bestRecord = localStorage.getItem('bestRecord');
     if (bestRecord) {
         displayBestRecord(bestRecord);
     } else {
-        displayBestRecord(0); // 初めての場合は0秒からスタート
+        displayBestRecord(0);
     }
 });

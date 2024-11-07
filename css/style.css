@@ -32,7 +32,7 @@ body {
     grid-row: 2 / 3;
 }
 
-#timer {
+#timer-display {
     grid-column: 6 / 7;
     grid-row: 2 / 3;
 }
@@ -159,7 +159,7 @@ button:active {
 
 .end {
     position: absolute;
-    top: 50%;
+    top: 54%;
     left: 50%;
     transform: translate(-50%, -65%);
     font-size: 36px;
@@ -192,4 +192,23 @@ button:active {
     background-color: #fff;
     border-color: black;
     border-radius: 10px;
+}
+
+.complete-message-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid white;
+    text-align: center;
+    border-radius:10px;
+    z-index: 9999;
+}
+
+.complete-message p {
+    font-size: 24px;
+    font-weight: bold;
+    color: green;
 }
