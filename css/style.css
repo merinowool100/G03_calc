@@ -324,7 +324,7 @@ button:active {
     /* #container と #container2 の幅と高さを調整 */
     #container, #container2 {
         width: 90%; /* 幅を90%に調整 */
-        height: auto; /* 高さを自動調整 */
+        height: 90%; /* 高さを自動調整 */
         margin: 0 auto; /* 中央揃え */
     }
 
