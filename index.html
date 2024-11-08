@@ -10,46 +10,55 @@
 </head>
 
 <body>
-    <div class="header">
-        <div id="top" style="font-weight: bold;"><span style="font-size:55px;">C</span>alc.</div>
-        <div id="nokori" style="font-size:18px;">残</div>
-        <div id="remainingDisplay" style="font-size:30px;">10</div>
-        <div id="timer-display" style="font-size:30px;">00:00:00</div>
-        <div id="best-record" style="font-size: 18px; margin-top: 20px;">Best: 00:00:00</div>
-    </div>
+<div id="wrap">
+    <div id="left-container">
     <div id="container">
+        <div class="header">
+            <div id="top" style="font-weight: bold;"><span style="font-size:55px;">C</span>alc.</div>
+            <div id="nokori" style="font-size:18px;">残</div>
+            <div id="remainingDisplay" style="font-size:30px;">10</div>
+            <div id="timer-display" style="font-size:30px;">00:00:00</div>
+            <div id="best-record" style="font-size: 18px; margin-top: 20px;">Best: 00:00:00</div>
+        </div>
         <div id="feedback"></div>
-        <canvas class="canvas"></canvas>
-        <div id="problemDisplayContainer">
-            <div id="problemDisplay"></div>
-            <div id="answerArea">
-                <input type="text" id="answerInput" readonly placeholder="" style="font-size: 36px;">
+        <div id="canvas-container">
+            <canvas class="canvas"></canvas>
+        </div>
+    </div>
+</div>
+    <div id="right-container">
+    <div id="container2">
+        <div id="container2-sub">
+            <div id="problemDisplayContainer">
+                <div id="problemDisplay"></div>
+                <div id="answerArea">
+                    <input type="text" id="answerInput" readonly placeholder="" style="font-size: 36px;">
+                </div>
+            </div>
+            <div style="height: 10px;"></div>
+            <div id="numberButtons">
+                <button class="numbtn" id="btn1" onclick="appendNumber(1)">1</button>
+                <button class="numbtn" id="btn2" onclick="appendNumber(2)">2</button>
+                <button class="numbtn" id="btn3" onclick="appendNumber(3)">3</button>
+                <button class="numbtn" id="btn4" onclick="appendNumber(4)">4</button>
+                <button class="numbtn" id="btn5" onclick="appendNumber(5)">5</button>
+                <button class="numbtn" id="btn6" onclick="appendNumber(6)">6</button>
+                <button class="numbtn" id="btn7" onclick="appendNumber(7)">7</button>
+                <button class="numbtn" id="btn8" onclick="appendNumber(8)">8</button>
+                <button class="numbtn" id="btn9" onclick="appendNumber(9)">9</button>
+                <button class="numbtn" id="btn0" onclick="appendNumber(0)">0</button>
+                <button class="btn" id="submitAnswerButton">Answer</button>
+                <button class="btn" id="clearButton">C</button>
+            </div>
+            <div style="height:10px;"></div>
+            <div class="btnArea">
+                <button class="btn" id="start">Start</button>
+                <button class="btn" id="reset">Reset</button>
             </div>
         </div>
-        <div class="btnArea">
-            <button class="btn" id="submitAnswerButton">Answer</button>
-            <button class="btn" id="clearButton">C</button>
-        </div>
-
-        <!-- 数字ボタン -->
-        <div id="numberButtons">
-            <button onclick="appendNumber(1)">1</button>
-            <button onclick="appendNumber(2)">2</button>
-            <button onclick="appendNumber(3)">3</button>
-            <button onclick="appendNumber(4)">4</button>
-            <button onclick="appendNumber(5)">5</button>
-            <button onclick="appendNumber(6)">6</button>
-            <button onclick="appendNumber(7)">7</button>
-            <button onclick="appendNumber(8)">8</button>
-            <button onclick="appendNumber(9)">9</button>
-            <button id="numberButton0" onclick="appendNumber(0)">0</button>
-        </div>
-        <div style="height:30px;"></div>
     </div>
-    <div class="btnArea">
-        <button class="btn" id="start">Start</button>
-        <button class="btn" id="reset">Reset</button>
     </div>
+</div>
 
     <script src="./js/calc.js"></script>
 </body>

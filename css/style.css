@@ -1,20 +1,37 @@
 /* 全体のレイアウト */
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     font-family: Arial, sans-serif;
+    position: relative;
+    height:100vh;
+}
+
+#wrap{
+    width:800px;
+    height:500px;
+    display:flex;
+    background-color: rgb(255, 187, 85);
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#left-container, #right-container{
+    display:flex;
+    align-items:center;
 }
 
 .header {
     width: 320px;
     font-size: 32px;
-    margin-bottom:10px;
+    margin-bottom: 10px;
     display: grid;
     grid-template-columns: 1fr auto 20px 40px 10px 120px;
     grid-template-rows: 30px 35px;
     align-items: end;
+    justify-content: center;
 }
 
 #top {
@@ -42,17 +59,44 @@ body {
     grid-row: 1 / 2;
 }
 
-#container {
+#container, #container2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 80%;
-    max-width: 400px;
-    height:650px;
+    width: 400px;
+    height: 400px;
     position: relative;
 }
 
+#container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 400px;
+    height: 400px;
+    position: relative;
+}
+
+#canvas-container{
+    width:320px;
+    height:320px;
+    background-color: white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius: 10px;
+}
+
+#container2{
+    height: 390px;
+    justify-content: flex-end;
+}
+
+#container2-sub{
+    width:320px;
+}
 
 
 /* フィードバック表示用のスタイル（絶対配置で上部に固定） */
@@ -75,15 +119,15 @@ body {
 
 /* 問題と入力エリアを横並びに配置 */
 #problemDisplayContainer {
-    height: 54px;
-    margin: 10px;
+    height: 70px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
-
-    /* 問題と入力エリアの間にスペース */
+    background-color: white;
 }
 
+/* 問題のフォントサイズ */
 #problemDisplay {
     font-size: 36px;
 }
@@ -95,45 +139,98 @@ body {
     align-items: center;
 }
 
-.btnArea {
-    display: flex;
-    gap: 10px;
-    /* align-items: center; */
-    margin-bottom: 10px;
-}
 
-
-/* 解答ボタンのスタイル */
+/* AnswerボタンとCボタンのスタイル */
 #submitAnswerButton,
 #clearButton {
-    width: 155px;
-    height: 40px;
-    margin: 0;
-    padding: 10px 10px;
     font-size: 16px;
-    cursor: pointer;
     background-color: #808080;
     color: white;
-    border: none;
+    border: #808080;
     border-radius: 10px;
 }
 
+/* AnswerボタンとCボタンのHoverアクション */
 #submitAnswerButton:hover,
 #clearButton:hover {
-    background-color: #808080;
+    background-color: #acacac;
 }
 
 /* 数字ボタンのレイアウト */
 #numberButtons {
     display: grid;
-    height: 200px;
-    grid-template-columns: repeat(3, 100px);
-    gap: 10px;
+    grid-template-columns: auto 10px auto 10px auto;
+    grid-template-rows: 40px 10px 40px 10px 40px 10px 40px;
+}
+
+.numbtn{
+    border-color: #808080;
+}
+
+#btn1 {
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+
+#btn2 {
+    grid-column: 3/4;
+    grid-row: 1/2;
+}
+
+#btn3 {
+    grid-column: 5/6;
+    grid-row: 1/2;
+}
+
+#btn4 {
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+
+#btn5 {
+    grid-column: 3/4;
+    grid-row: 3/4;
+}
+
+#btn6 {
+    grid-column: 5/6;
+    grid-row: 3/4;
+}
+
+#btn7 {
+    grid-column: 1/2;
+    grid-row: 5/6;
+}
+
+#btn8 {
+    grid-column: 3/4;
+    grid-row: 5/6;
+}
+
+#btn9 {
+    grid-column: 5/6;
+    grid-row: 5/6;
+}
+
+#btn0 {
+    grid-column: 3/4;
+    grid-row: 7/8;
+}
+
+#submitAnswerButton {
+    grid-column: 5/6;
+    grid-row: 7/8;
+}
+
+#clearButton {
+    grid-column: 1/2;
+    grid-row: 7/8;
 }
 
 #numberButtons button {
     font-size: 20px;
     border-radius: 10px;
+    width: 100px;
     height: 40px;
 }
 
@@ -143,13 +240,9 @@ button:hover {
 
 button:active {
     transform: translate(0, 2px);
-    /* border-bottom: none; */
 }
 
-/* 0のボタンを特別に扱う */
-#numberButton0 {
-    grid-column: span 3;
-}
+
 
 #answerInput {
     width: 50px;
@@ -172,25 +265,29 @@ button:active {
 #start {
     width: 155px;
     height: 40px;
-    margin: 0;
-    padding: 10px 10px;
     font-size: 16px;
-    cursor: pointer;
     background-color: #cd0000;
     color: white;
-    border: none;
+    border-color: #cd0000;
     border-radius: 10px;
+    grid-column: 1/2;
+    grid-row: 1/2;
 }
 
 
 #reset {
     width: 155px;
     height: 40px;
-    margin: 0;
-    padding: 10px 10px;
     font-size: 16px;
-    cursor: pointer;
     background-color: #fff;
-    border-color: black;
+    border-color: #808080;
     border-radius: 10px;
+    grid-column: 3/4;
+    grid-row:1/2
+}
+
+.btnArea {
+    display:grid;
+    grid-template-columns: 155px 10px 155px;
+    justify-content: center;
 }

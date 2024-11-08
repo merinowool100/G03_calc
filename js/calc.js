@@ -36,32 +36,32 @@ function updateRemainingDisplay() {
 
 // Canvasの設定
 const canvas = document.querySelector(".canvas");
-canvas.width = 320;
-canvas.height = 320;
+canvas.width = 300;
+canvas.height = 300;
 const context = canvas.getContext("2d");
 
 // マス目を描画する関数
 function cells() {
-    const gridSize = 32;
     const gridCount = 10;
+    const gridSize = canvas.width/gridCount;
     for (let i = 0; i <= gridCount; i++) {
         context.strokeStyle = "gray";
         context.lineWidth = 1;
         context.beginPath();
         context.moveTo(0, i * gridSize);
-        context.lineTo(320, i * gridSize);
+        context.lineTo(300, i * gridSize);
         context.moveTo(i * gridSize, 0);
-        context.lineTo(i * gridSize, 320);
+        context.lineTo(i * gridSize, 300);
         context.closePath();
         context.stroke();
     }
     context.strokeStyle = "black";
     context.beginPath();
     context.lineWidth = 3;
-    context.moveTo(0, 160);
-    context.lineTo(320, 160);
-    context.moveTo(160, 0);
-    context.lineTo(160, 320);
+    context.moveTo(0, 150);
+    context.lineTo(300, 150);
+    context.moveTo(150, 0);
+    context.lineTo(150, 300);
     context.closePath();
     context.stroke();
 }
