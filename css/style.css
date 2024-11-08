@@ -99,13 +99,12 @@ body {
 }
 
 
-/* フィードバック表示用のスタイル（絶対配置で上部に固定） */
+/* フィードバック表示用のスタイル */
 #feedback {
     font-size: 80px;
     color: green;
     position: absolute;
     top: 150px;
-    /* AnswerAreaの上に表示 */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -113,15 +112,12 @@ body {
     transition: opacity 1s ease-out;
 }
 
-.hidden {
-    opacity: 0;
-}
-
 /* 問題と入力エリアを横並びに配置 */
 #problemDisplayContainer {
     height: 70px;
     border-radius: 10px;
     display: flex;
+    justify-content:center;
     align-items: center;
     gap: 10px;
     background-color: white;
@@ -141,7 +137,14 @@ body {
 
 
 /* AnswerボタンとCボタンのスタイル */
-#submitAnswerButton,
+#submitAnswerButton {
+    font-size: 16px;
+    background-color: #3aa310;
+    color: white;
+    border: #249116;
+    border-radius: 10px;
+}
+
 #clearButton {
     font-size: 16px;
     background-color: #808080;
@@ -151,7 +154,10 @@ body {
 }
 
 /* AnswerボタンとCボタンのHoverアクション */
-#submitAnswerButton:hover,
+#submitAnswerButton:hover {
+    background-color: #75c42b;
+}
+
 #clearButton:hover {
     background-color: #acacac;
 }
@@ -290,4 +296,76 @@ button:active {
     display:grid;
     grid-template-columns: 155px 10px 155px;
     justify-content: center;
+}
+
+/* メディアクエリ：スマホサイズ以下の場合のスタイル */
+@media screen and (max-width: 768px) {
+    /* #wrapを縦並びに変更 */
+    .header{
+        margin-top:20px;
+    }
+
+    #wrap {
+        flex-direction: column; /* 縦並びに変更 */
+        width: 100%; /* 幅を100%に変更 */
+        height: 100%; /* 高さを100%に変更 */
+        padding: 10px; /* 内側の余白を少し減らす */
+    }
+
+    /* 左右コンテナを縦並びにする */
+    #left-container, #right-container {
+        width: 100%; /* 横幅を100%に変更 */
+        height: auto; /* 高さを自動調整 */
+        margin-bottom: 20px; /* 下部にスペースを追加 */
+    }
+
+    /* #container と #container2 の幅と高さを調整 */
+    #container, #container2 {
+        width: 90%; /* 幅を90%に調整 */
+        height: auto; /* 高さを自動調整 */
+        margin: 0 auto; /* 中央揃え */
+    }
+
+    /* canvas-containerのサイズを調整 */
+    #canvas-container {
+        width: 320px; /* 幅を少し小さく */
+        height: 320px; /* 高さも調整 */
+    }
+
+    .canvas{
+        width:90%;
+        height:90%;
+    }
+
+    /* 問題表示エリアのフォントサイズを小さく */
+    /* #problemDisplay {
+        font-size: 28px;
+    } */
+
+    #numberButtons {
+        display: grid;
+        grid-template-columns: auto 10px auto 10px auto;
+        grid-template-rows: 40px 5px 40px 5px 40px 5px 40px;
+        justify-content: center;
+    }
+
+    .btnArea {
+        display:grid;
+        grid-template-columns: auto 10px auto;
+        justify-content: center;
+    }
+
+    #numberButtons button {
+        font-size: 18px;
+        width: 100px;
+        height: 40px;
+    }
+
+
+    /* フォントサイズとボタンの幅、高さを調整 */
+    #submitAnswerButton, #clearButton {
+        font-size: 14px;
+        width: 120px;
+        height: 40px;
+    }
 }

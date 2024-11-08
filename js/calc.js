@@ -83,21 +83,24 @@ function showProblem() {
     const residual = currentProblem.mother % 10;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
+    const gridCount2 = 10;
+    const gridSize2 = canvas.width/gridCount2;
+
     context.fillStyle = "rgba(255,150,0,0.5)";
     context.beginPath();
     context.moveTo(0, 0);
-    context.lineTo(0, 320);
-    context.lineTo(rows * 32, 320);
-    context.lineTo(rows * 32, 0);
+    context.lineTo(0, 300);
+    context.lineTo(rows * gridSize2, 300);
+    context.lineTo(rows * gridSize2, 0);
     context.closePath();
     context.fill();
 
     context.fillStyle = "rgba(255,150,0,0.5)";
     context.beginPath();
-    context.moveTo(rows * 32, 0);
-    context.lineTo(rows * 32, 32 * residual);
-    context.lineTo((rows + 1) * 32, 32 * residual);
-    context.lineTo((rows + 1) * 32, 0);
+    context.moveTo(rows * gridSize2, 0);
+    context.lineTo(rows * gridSize2, gridSize2 * residual);
+    context.lineTo((rows + 1) * gridSize2, gridSize2 * residual);
+    context.lineTo((rows + 1) * gridSize2, 0);
     context.closePath();
     context.fill();
     cells();
