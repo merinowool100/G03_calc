@@ -330,8 +330,8 @@ button:active {
 
     /* canvas-containerのサイズを調整 */
     #canvas-container {
-        width: 320px; /* 幅を少し小さく */
-        height: 320px; /* 高さも調整 */
+        width: 300px; /* 幅を少し小さく */
+        height: 300px; /* 高さも調整 */
     }
 
     .canvas{
