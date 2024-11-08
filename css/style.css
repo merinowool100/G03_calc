@@ -310,7 +310,7 @@ button:active {
     #wrap {
         flex-direction: column; /* 縦並びに変更 */
         width: 100%; /* 幅を100%に変更 */
-        height: 100%; /* 高さを100%に変更 */
+        height: 90%; /* 高さを100%に変更 */
         padding: 10px; /* 内側の余白を少し減らす */
     }
 
