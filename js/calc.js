@@ -12,7 +12,7 @@ let milliseconds = 0;
 
 // 二桁の足し算と引き算の問題をランダムに作成
 function createQ() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1; i++) {
         let num1, num2, isAddition;
         do {
             num1 = Math.floor(Math.random() * 90) + 10;
@@ -75,38 +75,36 @@ if (!isStarted) {
 function showProblem() {
     if (problems.length === 0 || currentProblemIndex >= problems.length) return;
     const currentProblem = problems[currentProblemIndex];
-    if (isStarted) {
-        document.getElementById("problemDisplay").innerText = `Q: ${currentProblem.question} =`;
-    }
+
+    document.getElementById("problemDisplay").innerText = `${currentProblem.question} =`;
     updateRemainingDisplay();
 
     const rows = Math.floor(currentProblem.mother / 10);
     const residual = currentProblem.mother % 10;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    if (isStarted) {
-        context.fillStyle = "rgba(255,150,0,0.5)";
-        context.beginPath();
-        context.moveTo(0, 0);
-        context.lineTo(0, 320);
-        context.lineTo(rows * 32, 320);
-        context.lineTo(rows * 32, 0);
-        context.closePath();
-        context.fill();
+    context.fillStyle = "rgba(255,150,0,0.5)";
+    context.beginPath();
+    context.moveTo(0, 0);
+    context.lineTo(0, 320);
+    context.lineTo(rows * 32, 320);
+    context.lineTo(rows * 32, 0);
+    context.closePath();
+    context.fill();
 
-        context.fillStyle = "rgba(255,150,0,0.5)";
-        context.beginPath();
-        context.moveTo(rows * 32, 0);
-        context.lineTo(rows * 32, 32 * residual);
-        context.lineTo((rows + 1) * 32, 32 * residual);
-        context.lineTo((rows + 1) * 32, 0);
-        context.closePath();
-        context.fill();
-    }
+    context.fillStyle = "rgba(255,150,0,0.5)";
+    context.beginPath();
+    context.moveTo(rows * 32, 0);
+    context.lineTo(rows * 32, 32 * residual);
+    context.lineTo((rows + 1) * 32, 32 * residual);
+    context.lineTo((rows + 1) * 32, 0);
+    context.closePath();
+    context.fill();
     cells();
 }
 
 function appendNumber(number) {
+    if (!isStarted) return;
     const answerInput = document.getElementById("answerInput");
     answerInput.value += number;
 }
@@ -137,9 +135,14 @@ function checkAnswer() {
     // document.getElementById("answerInput").disabled = true;
 }
 
-document.getElementById("submitAnswerButton").addEventListener("click", checkAnswer);
+document.getElementById("submitAnswerButton").addEventListener("click",()=>{
+    if(isStarted){
+        checkAnswer();
+    }
+})
 
 document.addEventListener("keydown", (event) => {
+    if (!isStarted) return;
     if (event.key >= "0" && event.key <= "9") {
         appendNumber(event.key);
     } else if (event.key === "Backspace") {
@@ -168,21 +171,9 @@ function showFeedback(isCorrect) {
                 // document.getElementById("answerInput").disabled = false;
             } else {
                 isEnd = true;
+                document.getElementById("problemDisplay").innerText = "";
                 document.getElementById("remainingDisplay").innerText = "0";
-                
-                // Mission completeメッセージを作成して追加
-                const completeMessageBox = document.createElement("div");
-                completeMessageBox.classList.add("complete-message-box");
-                completeMessageBox.innerHTML = `
-                    <div class="complete-message">
-                        <p>Mission complete!!</p>
-                    </div>
-                `;
-                document.getElementById("problemDisplayContainer").appendChild(completeMessageBox); // 親要素に追加
-
-                // Submitボタンを無効にする
-                // document.getElementById("submitAnswerButton").disabled = true;
-                
+                screen_lock(); 
                 updateBestRecord();  // ベストレコードを更新
             }
         }, 100);
@@ -213,7 +204,7 @@ function updateBestRecord() {
     const currentRecord = milliseconds;
     // localStorageからbestRecordを取得。nullの場合は0をデフォルトにする
     let bestRecord = localStorage.getItem('bestRecord');
-    
+
     if (bestRecord === null) {
         bestRecord = 0;  // bestRecordがnullの場合は0に設定
     } else {
@@ -263,6 +254,7 @@ document.getElementById("start").addEventListener("click", () => {
 });
 
 document.getElementById("reset").addEventListener("click", () => {
+    // window.location.reload();
     clearInterval(timerInterval);
     timerInterval = null;
     isStarted = false;
@@ -292,3 +284,60 @@ document.getElementById("reset").addEventListener("click", () => {
         displayBestRecord(0);
     }
 });
+
+// スクリーンロックの生成
+function createLockScreen(messageText, bgColor) {
+    let lock_screen = document.createElement('div');
+    lock_screen.id = "screenLock";
+    lock_screen.style.height = '100%';
+    lock_screen.style.left = '0px';
+    lock_screen.style.position = 'fixed';
+    lock_screen.style.top = '0px';
+    lock_screen.style.width = '100%';
+    lock_screen.style.zIndex = '9999';
+    lock_screen.style.opacity = '0.8';
+    lock_screen.style.backgroundColor = "rgba(0,0,0,0.5)";
+
+    let message = document.createElement('div');
+    message.textContent = messageText;
+    message.style.color = 'white';
+    message.style.fontSize = '36px';
+    message.style.position = 'absolute';
+    message.style.top = '50%';
+    message.style.left = '50%';
+    message.style.transform = 'translate(-50%, -50%)';
+    message.style.whiteSpace = "nowrap";
+    message.style.backgroundColor = bgColor;
+
+    lock_screen.appendChild(message);
+
+    let retryButton = document.createElement('button');
+    retryButton.textContent = "Retry";
+    retryButton.style.position = "absolute";
+    retryButton.style.top = "60%";
+    retryButton.style.left = "50%";
+    retryButton.style.transform = "translateX(-50%)";
+    retryButton.style.fontSize = "20px";
+    retryButton.addEventListener('click', () => {
+        window.location.reload();
+    });
+
+    lock_screen.appendChild(retryButton);
+    return lock_screen;
+}
+
+
+
+// 終了時のスクリーンロック関数
+function screen_lock() {
+    let message = "Well done!!";
+    let bgColor = "rgba(255,0,0,0.5)";
+    const bestRecord = localStorage.getItem("bestRecord");
+    if (bestRecord === null || milliseconds < bestRecord) {
+        message = "New record!!";
+        bgColor = "rgba(0,255,0,0.5)";
+    }
+
+    let lock_screen = createLockScreen(message, bgColor);
+    document.body.appendChild(lock_screen);
+}
