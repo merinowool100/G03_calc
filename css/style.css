@@ -304,7 +304,7 @@ button:active {
 @media screen and (max-width: 768px) {
     /* #wrapを縦並びに変更 */
     .header{
-        margin-top:20px;
+        margin-top:5px;
     }
 
     #wrap {
