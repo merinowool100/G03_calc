@@ -273,7 +273,7 @@ button:active {
 #start {
     width: 155px;
     height: 40px;
-    font-size: 16px;
+    font-size: 20px;
     background-color: #cd0000;
     color: white;
     border-color: #cd0000;
@@ -286,7 +286,7 @@ button:active {
 #reset {
     width: 155px;
     height: 40px;
-    font-size: 16px;
+    font-size: 20px;
     background-color: #fff;
     border-color: #808080;
     border-radius: 10px;
@@ -310,7 +310,7 @@ button:active {
     #wrap {
         flex-direction: column; /* 縦並びに変更 */
         width: 100%; /* 幅を100%に変更 */
-        height: 90%; /* 高さを100%に変更 */
+        height: 100%; /* 高さを100%に変更 */
         padding: 10px; /* 内側の余白を少し減らす */
     }
 
@@ -323,15 +323,15 @@ button:active {
 
     /* #container と #container2 の幅と高さを調整 */
     #container, #container2 {
-        width: 90%; /* 幅を90%に調整 */
-        height: 90%; /* 高さを自動調整 */
+        width: 100%; /* 幅を90%に調整 */
+        height: 100%; /* 高さを自動調整 */
         margin: 0 auto; /* 中央揃え */
     }
 
     /* canvas-containerのサイズを調整 */
     #canvas-container {
-        width: 300px; /* 幅を少し小さく */
-        height: 300px; /* 高さも調整 */
+        width: 280px; /* 幅を少し小さく */
+        height: 280px; /* 高さも調整 */
     }
 
     .canvas{
@@ -339,15 +339,10 @@ button:active {
         height:90%;
     }
 
-    /* 問題表示エリアのフォントサイズを小さく */
-    /* #problemDisplay {
-        font-size: 28px;
-    } */
-
     #numberButtons {
         display: grid;
         grid-template-columns: auto 10px auto 10px auto;
-        grid-template-rows: 40px 5px 40px 5px 40px 5px 40px;
+        grid-template-rows: 30px 5px 30px 5px 30px 5px 30px;
         justify-content: center;
     }
 
@@ -360,14 +355,19 @@ button:active {
     #numberButtons button {
         font-size: 18px;
         width: 100px;
-        height: 40px;
+        height: 30px;
     }
 
 
     /* フォントサイズとボタンの幅、高さを調整 */
     #submitAnswerButton, #clearButton {
-        font-size: 14px;
+        font-size: 18px;
         width: 120px;
-        height: 40px;
+        height: 30px;
+    }
+
+    #start, #reset {
+        font-size:18px;
+        height:30px;
     }
 }
