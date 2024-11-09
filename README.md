@@ -1,7 +1,7 @@
 # Calc.
 
 ## Description
-Simple math calculation game. Use upto two digits numbers and + and - calculations.  You try 10 questions.  If you made a mistake, same Q is put back to the end of the Question list, and the program show it again later until you clear that question.
+Simple math calculation game. Use upto two digits numbers with +/- calculations.  You try 10 questions.  If you made a mistake, same Q is put back to the end of the Question list, and the program show it again later until you clear that question.
 
 ## Demo
 https://merinowool100.github.io/G03_calc/
