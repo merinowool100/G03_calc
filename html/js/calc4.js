@@ -15,16 +15,10 @@ function createQ() {
     for (let i = 0; i < 10; i++) {
         let num1, num2, isAddition;
         do {
-            num1 = Math.floor(Math.random() * 90) + 10;
-            num2 = Math.floor(Math.random() * 90) + 10;
-            isAddition = Math.random() > 0.5;
-        } while ((isAddition && num1 + num2 > 100) || (!isAddition && num1 < num2));
-
-        if (isAddition) {
-            problems.push({ question: `${num1} + ${num2}`, answer: num1 + num2, mother: num1 });
-        } else {
-            problems.push({ question: `${num1} - ${num2}`, answer: num1 - num2, mother: num1 });
-        }
+            num1 = Math.floor(Math.random() * 20) + 1;
+            // num2 = Math.floor(Math.random() * 20) + 1;
+        } while ((num1 < 11));
+        problems.push({ question: `${num1} - 5`, answer: num1 - 5, mother: num1 });
     }
 }
 
@@ -42,7 +36,7 @@ const context = canvas.getContext("2d");
 
 // マス目を描画する関数
 function cells() {
-    const gridCount = 10;
+    const gridCount = 5;
     const gridSize = canvas.width/gridCount;
     for (let i = 0; i <= gridCount; i++) {
         context.strokeStyle = "gray";
@@ -58,10 +52,10 @@ function cells() {
     context.strokeStyle = "black";
     context.beginPath();
     context.lineWidth = 3;
-    context.moveTo(0, 150);
-    context.lineTo(300, 150);
-    context.moveTo(150, 0);
-    context.lineTo(150, 300);
+    context.moveTo(120, 0);
+    context.lineTo(120, 300);
+    context.moveTo(240, 0);
+    context.lineTo(240, 300);
     context.closePath();
     context.stroke();
 }
@@ -83,7 +77,7 @@ function showProblem() {
     const residual = currentProblem.mother % 10;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    const gridCount2 = 10;
+    const gridCount2 = 5;
     const gridSize2 = canvas.width/gridCount2;
 
     context.fillStyle = "rgba(255,150,0,0.5)";
@@ -206,41 +200,41 @@ function startTimer() {
 function updateBestRecord() {
     const currentRecord = milliseconds;
     // localStorageからbestRecordを取得。nullの場合は0をデフォルトにする
-    let bestRecord = localStorage.getItem('bestRecord');
+    let bestRecord4 = localStorage.getItem('bestRecord4');
 
-    if (bestRecord === null) {
-        bestRecord = 0;  // bestRecordがnullの場合は0に設定
+    if (bestRecord4 === null) {
+        bestRecord4 = 0;  // bestRecordがnullの場合は0に設定
     } else {
-        bestRecord = parseInt(bestRecord, 10);  // 整数として扱う
+        bestRecord4 = parseInt(bestRecord4, 10);  // 整数として扱う
     }
 
     // 現在の記録が最良記録よりも短ければ更新する
-    if (currentRecord < bestRecord || bestRecord === 0) {
-        localStorage.setItem('bestRecord', currentRecord);  // 新しいbestRecordを保存
-        bestRecord = currentRecord;  // 変数に最良記録を格納
+    if (currentRecord < bestRecord4 || bestRecord4 === 0) {
+        localStorage.setItem('bestRecord4', currentRecord);  // 新しいbestRecordを保存
+        bestRecord4 = currentRecord;  // 変数に最良記録を格納
     }
 
-    displayBestRecord(bestRecord);  // ベストレコードを表示
+    displayBestRecord(bestRecord4);  // ベストレコードを表示
 }
 
-function displayBestRecord(bestRecord) {
-    if (isNaN(bestRecord)) {
-        bestRecord = 0;  // 万が一bestRecordがNaNであれば0に設定
+function displayBestRecord(bestRecord4) {
+    if (isNaN(bestRecord4)) {
+        bestRecord4 = 0;  // 万が一bestRecordがNaNであれば0に設定
     }
 
     // 時間としてフォーマットする
-    let minutes = Math.floor((bestRecord % 360000) / 6000);
-    let seconds = Math.floor((bestRecord % 6000) / 100);
-    let hundredths = bestRecord % 100;
+    let minutes = Math.floor((bestRecord4 % 360000) / 6000);
+    let seconds = Math.floor((bestRecord4 % 6000) / 100);
+    let hundredths = bestRecord4 % 100;
 
     document.getElementById("best-record").textContent =
         `Best: ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")}`;
 }
 
 window.addEventListener("load", () => {
-    const bestRecord = localStorage.getItem('bestRecord');
-    if (bestRecord) {
-        displayBestRecord(bestRecord); // ページロード時にベストレコード表示
+    const bestRecord4 = localStorage.getItem('bestRecord4');
+    if (bestRecord4) {
+        displayBestRecord(bestRecord4); // ページロード時にベストレコード表示
     } else {
         displayBestRecord(0);
     }
@@ -280,9 +274,9 @@ document.getElementById("reset").addEventListener("click", () => {
     }
 
     // Best recordの再表示
-    const bestRecord = localStorage.getItem('bestRecord');
-    if (bestRecord) {
-        displayBestRecord(bestRecord);
+    const bestRecord4 = localStorage.getItem('bestRecord4');
+    if (bestRecord4) {
+        displayBestRecord(bestRecord4);
     } else {
         displayBestRecord(0);
     }
@@ -335,8 +329,8 @@ function createLockScreen(messageText, bgColor) {
 function screen_lock() {
     let message = "Well done!!";
     let bgColor = "rgba(255,0,0,0.5)";
-    const bestRecord = localStorage.getItem("bestRecord");
-    if (bestRecord === null || milliseconds < bestRecord) {
+    const bestRecord4 = localStorage.getItem("bestRecord4");
+    if (bestRecord4 === null || milliseconds < bestRecord4) {
         message = "New record!!";
         bgColor = "rgba(0,255,0,0.5)";
     }
@@ -344,3 +338,7 @@ function screen_lock() {
     let lock_screen = createLockScreen(message, bgColor);
     document.body.appendChild(lock_screen);
 }
+
+document.getElementById("back").addEventListener("click",()=>{
+    window.location.href = "../index.html";
+});

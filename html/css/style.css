@@ -168,7 +168,7 @@ body {
 #numberButtons {
     display: grid;
     grid-template-columns: auto 10px auto 10px auto;
-    grid-template-rows: 40px 10px 40px 10px 40px 10px 40px;
+    grid-template-rows: 40px 10px 40px 10px 40px 10px 40px 10px 40px;
 }
 
 .numbtn{
@@ -235,6 +235,9 @@ body {
     grid-row: 7/8;
 }
 
+
+
+
 #numberButtons button {
     font-size: 20px;
     border-radius: 10px;
@@ -272,7 +275,7 @@ button:active {
 }
 
 #start {
-    width: 155px;
+    width: 100px;
     height: 40px;
     font-size: 20px;
     background-color: #cd0000;
@@ -280,26 +283,37 @@ button:active {
     border-color: #cd0000;
     border-radius: 10px;
     grid-column: 1/2;
-    grid-row: 1/2;
+    grid-row: 9/10;
 }
 
 
 #reset {
-    width: 155px;
+    width: 100px;
     height: 40px;
     font-size: 20px;
     background-color: #fff;
     border-color: #808080;
     border-radius: 10px;
     grid-column: 3/4;
-    grid-row:1/2
+    grid-row:9/10
 }
 
-.btnArea {
-    display:grid;
-    grid-template-columns: 155px 10px 155px;
-    justify-content: center;
+#back {
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    background-color: #fff;
+    border-color: #808080;
+    border-radius: 10px;
+    grid-column: 5/6;
+    grid-row:9/10
 }
+
+/* .btnArea {
+    display:grid;
+    grid-template-columns: auto 10px auto 10px auto;
+    justify-content: center;
+} */
 
 /* メディアクエリ：スマホサイズ以下の場合のスタイル */
 @media screen and (max-width: 768px) {
@@ -343,15 +357,15 @@ button:active {
     #numberButtons {
         display: grid;
         grid-template-columns: auto 10px auto 10px auto;
-        grid-template-rows: 30px 5px 30px 5px 30px 5px 30px;
+        grid-template-rows: 30px 5px 30px 5px 30px 5px 30px 5px 30px;
         justify-content: center;
     }
 
-    .btnArea {
+    /* .btnArea {
         display:grid;
         grid-template-columns: auto 10px auto;
         justify-content: center;
-    }
+    } */
 
     #numberButtons button {
         font-size: 18px;
@@ -367,10 +381,10 @@ button:active {
         height: 30px;
     }
 
-    #start, #reset {
+    /* #start, #reset, #back {
         font-size:18px;
         height:30px;
-    }
+    } */
 
     #answerInput {
         width: 50px;

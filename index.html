@@ -4,63 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./html/css/reset.css">
+    <link rel="stylesheet" href="./html/css/toppage.css">
     <title>Calc.</title>
 </head>
 
 <body>
-<div id="wrap">
-    <div id="left-container">
-    <div id="container">
-        <div class="header">
-            <div id="top"><span style="font-size:55px;">Calc.</span></div>
-            <div id="nokori" style="font-size:12px;">Rem.</div>
-            <div id="remainingDisplay" style="font-size:30px;">10</div>
-            <div id="timer-display" style="font-size:30px;">00:00:00</div>
-            <div id="best-record" style="font-size: 18px; margin-top: 20px;">Best: 00:00:00</div>
-        </div>
-        <div id="feedback"></div>
-        <div id="canvas-container">
-            <canvas class="canvas"></canvas>
-        </div>
-    </div>
-</div>
-    <div id="right-container">
-    <div id="container2">
-        <div id="container2-sub">
-            <div id="problemDisplayContainer">
-                <div id="problemDisplay"></div>
-                <div id="answerArea">
-                    <input type="text" id="answerInput" readonly placeholder="" style="font-size: 36px;">
-                </div>
-            </div>
-            <div style="height: 10px;"></div>
-            <div id="numberButtons">
-                <button class="numbtn" id="btn1" onclick="appendNumber(1)">1</button>
-                <button class="numbtn" id="btn2" onclick="appendNumber(2)">2</button>
-                <button class="numbtn" id="btn3" onclick="appendNumber(3)">3</button>
-                <button class="numbtn" id="btn4" onclick="appendNumber(4)">4</button>
-                <button class="numbtn" id="btn5" onclick="appendNumber(5)">5</button>
-                <button class="numbtn" id="btn6" onclick="appendNumber(6)">6</button>
-                <button class="numbtn" id="btn7" onclick="appendNumber(7)">7</button>
-                <button class="numbtn" id="btn8" onclick="appendNumber(8)">8</button>
-                <button class="numbtn" id="btn9" onclick="appendNumber(9)">9</button>
-                <button class="numbtn" id="btn0" onclick="appendNumber(0)">0</button>
-                <button class="btn" id="submitAnswerButton">Answer</button>
-                <button class="btn" id="clearButton">C</button>
-            </div>
-            <div style="height:10px;"></div>
-            <div class="btnArea">
-                <button class="btn" id="start">Start</button>
-                <button class="btn" id="reset">Reset</button>
+    <div id="wrap">
+        <div id="topPageTitle">Calc.</div>
+        <div id="l-container">
+            <div id="container">
+                <!-- <div id="box1"> -->
+                <button id="box1" class="btn">Lv.1</button>
+                <button id="box2" class="btn">Lv.2</button>
+                <button id="box3" class="btn">Lv.3</button>
+                <button id="box4" class="btn">Lv.4</button>
+                <button id="box5" class="btn">Lv.5</button>
+                <button id="box6" class="btn">Lv.6</button>
+                <button id="box7" class="btn">Lv.7</button>
+                <button id="box8" class="btn">Lv.8</button>
+                <button id="box9" class="btn">Lv.9</button>
+                <button id="box10" class="btn">Lv.10</button>
+                <!-- </div> -->
+                 <div id="bottom-space" style="height:100px;"></div>
             </div>
         </div>
     </div>
-    </div>
-</div>
-
-    <script src="./js/calc.js"></script>
 </body>
+
+<script>
+    document.getElementById("box1").addEventListener("click",()=>{ window.location.href='./html/lv1.html';});
+    document.getElementById("box2").addEventListener("click",()=>{ window.location.href='./html/lv2.html';});
+    document.getElementById("box3").addEventListener("click",()=>{ window.location.href='./html/lv3.html';});
+    document.getElementById("box4").addEventListener("click",()=>{ window.location.href='./html/lv4.html';});
+    document.getElementById("box5").addEventListener("click",()=>{ window.location.href='./html/lv5.html';});
+    document.getElementById("box6").addEventListener("click",()=>{ window.location.href='./html/lv6.html';});
+    document.getElementById("box7").addEventListener("click",()=>{ window.location.href='./html/lv7.html';});
+    document.getElementById("box8").addEventListener("click",()=>{ window.location.href='./html/lv8.html';});
+    document.getElementById("box9").addEventListener("click",()=>{ window.location.href='./html/lv9.html';});
+    document.getElementById("box10").addEventListener("click",()=>{ window.location.href='./html/lv10.html';});
+
+</script>
+
 
 </html>
