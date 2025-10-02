@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- ズーム制限＆画面サイズに合わせる -->
+    <!-- ズーム制限 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
@@ -15,40 +15,26 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+            background-color: #f0f0f0; /* 画面全体の背景色（任意で変更OK） */
         }
+
+        /* 全体レイアウトを横並び固定 */
         #wrap {
             display: flex;
+            flex-direction: row; /* 常に横並び */
             width: 100%;
             height: 100%;
         }
-        /* PCなど横長画面 → 左右並び */
-        @media (min-aspect-ratio: 4/3) {
-            #wrap {
-                flex-direction: row;
-            }
-            #left-container, #right-container {
-                flex: 1;
-            }
-        }
-        /* スマホなど縦長画面 → 上下並び */
-        @media (max-aspect-ratio: 4/3) {
-            #wrap {
-                flex-direction: column;
-            }
-            #left-container, #right-container {
-                flex: 1;
-            }
-        }
 
-        #left-container, #right-container {
+        /* 左側 = canvasエリア */
+        #left-container {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             box-sizing: border-box;
-            overflow: hidden;
         }
 
-        /* ===== Canvasエリア ===== */
         #canvas-container {
             width: 100%;
             height: 100%;
@@ -56,17 +42,60 @@
             justify-content: center;
             align-items: center;
         }
+
         canvas.canvas {
-            aspect-ratio: 1 / 1;   /* ← 正方形固定 */
+            aspect-ratio: 4 / 3;   /* 横長固定 */
             max-width: 100%;
             max-height: 100%;
-            background: #eee; /* デバッグ用: 背景色 */
+            background: transparent; /* 背景はbodyと同じにする */
+        }
+
+        /* 右側 = テンキーエリア */
+        #right-container {
+            flex: 0 0 300px; /* 固定幅（調整可能） */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        #container2 {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container2-sub {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #numberButtons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .numbtn, .btn {
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        /* 縦持ち（portrait）でも横並びを維持 */
+        @media (orientation: portrait) {
+            #wrap {
+                flex-direction: row; /* 縦画面でも横並び */
+            }
         }
     </style>
 </head>
 
 <body>
 <div id="wrap">
+    <!-- 左側: canvas -->
     <div id="left-container">
         <div id="container">
             <div class="header">
@@ -83,6 +112,7 @@
         </div>
     </div>
 
+    <!-- 右側: テンキー -->
     <div id="right-container">
         <div id="container2">
             <div id="container2-sub">
