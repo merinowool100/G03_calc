@@ -108,7 +108,7 @@
 </div>
 
 <script>
-    // 問題を格納するリスト
+// 問題を格納するリスト
 const problems = [];
 let currentProblemIndex = 0;
 
@@ -123,14 +123,20 @@ let milliseconds = 0;
 // 二桁の足し算と引き算の問題をランダムに作成
 function createQ() {
     for (let i = 0; i < 10; i++) {
-        let num1;
+        let num1, num2, isAddition;
         do {
-            num1 = Math.floor(Math.random() * 100) + 1;
-        } while ((num1 + 5 > 100) || num1 <21);
+            num1 = Math.floor(Math.random() * 90) + 10;
+            num2 = Math.floor(Math.random() * 90) + 10;
+            isAddition = Math.random() > 0.5;
+        } while ((isAddition && num1 + num2 > 100) || (!isAddition && num1 < num2));
 
-            problems.push({ question: `${num1} - 5`, answer: num1 - 5, mother: num1 });
-
-}}
+        if (isAddition) {
+            problems.push({ question: `${num1} + ${num2}`, answer: num1 + num2, mother: num1 });
+        } else {
+            problems.push({ question: `${num1} - ${num2}`, answer: num1 - num2, mother: num1 });
+        }
+    }
+}
 
 // 残りの問題数を更新する関数
 function updateRemainingDisplay() {
@@ -310,41 +316,41 @@ function startTimer() {
 function updateBestRecord() {
     const currentRecord = milliseconds;
     // localStorageからbestRecordを取得。nullの場合は0をデフォルトにする
-    let bestRecord9 = localStorage.getItem('bestRecord9');
+    let bestRecord = localStorage.getItem('bestRecord');
 
-    if (bestRecord9 === null) {
-        bestRecord9 = 0;  // bestRecordがnullの場合は0に設定
+    if (bestRecord === null) {
+        bestRecord = 0;  // bestRecordがnullの場合は0に設定
     } else {
-        bestRecord9 = parseInt(bestRecord9, 10);  // 整数として扱う
+        bestRecord = parseInt(bestRecord, 10);  // 整数として扱う
     }
 
     // 現在の記録が最良記録よりも短ければ更新する
-    if (currentRecord < bestRecord9 || bestRecord9 === 0) {
-        localStorage.setItem('bestRecord9', currentRecord);  // 新しいbestRecordを保存
-        bestRecord9 = currentRecord;  // 変数に最良記録を格納
+    if (currentRecord < bestRecord || bestRecord === 0) {
+        localStorage.setItem('bestRecord', currentRecord);  // 新しいbestRecordを保存
+        bestRecord = currentRecord;  // 変数に最良記録を格納
     }
 
-    displayBestRecord(bestRecord9);  // ベストレコードを表示
+    displayBestRecord(bestRecord);  // ベストレコードを表示
 }
 
-function displayBestRecord(bestRecord9) {
-    if (isNaN(bestRecord9)) {
-        bestRecord9 = 0;  // 万が一bestRecordがNaNであれば0に設定
+function displayBestRecord(bestRecord) {
+    if (isNaN(bestRecord)) {
+        bestRecord = 0;  // 万が一bestRecordがNaNであれば0に設定
     }
 
     // 時間としてフォーマットする
-    let minutes = Math.floor((bestRecord9 % 360000) / 6000);
-    let seconds = Math.floor((bestRecord9 % 6000) / 100);
-    let hundredths = bestRecord9 % 100;
+    let minutes = Math.floor((bestRecord % 360000) / 6000);
+    let seconds = Math.floor((bestRecord % 6000) / 100);
+    let hundredths = bestRecord % 100;
 
     document.getElementById("best-record").textContent =
         `Best: ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(hundredths).padStart(2, "0")}`;
 }
 
 window.addEventListener("load", () => {
-    const bestRecord9 = localStorage.getItem('bestRecord9');
-    if (bestRecord9) {
-        displayBestRecord(bestRecord9); // ページロード時にベストレコード表示
+    const bestRecord = localStorage.getItem('bestRecord');
+    if (bestRecord) {
+        displayBestRecord(bestRecord); // ページロード時にベストレコード表示
     } else {
         displayBestRecord(0);
     }
@@ -384,9 +390,9 @@ document.getElementById("reset").addEventListener("click", () => {
     }
 
     // Best recordの再表示
-    const bestRecord9 = localStorage.getItem('bestRecord9');
-    if (bestRecord9) {
-        displayBestRecord(bestRecord9);
+    const bestRecord = localStorage.getItem('bestRecord');
+    if (bestRecord) {
+        displayBestRecord(bestRecord);
     } else {
         displayBestRecord(0);
     }
@@ -439,8 +445,8 @@ function createLockScreen(messageText, bgColor) {
 function screen_lock() {
     let message = "Well done!!";
     let bgColor = "rgba(255,0,0,0.5)";
-    const bestRecord9 = localStorage.getItem("bestRecord9");
-    if (bestRecord9 === null || milliseconds < bestRecord9) {
+    const bestRecord = localStorage.getItem("bestRecord");
+    if (bestRecord === null || milliseconds < bestRecord) {
         message = "New record!!";
         bgColor = "rgba(0,255,0,0.5)";
     }
