@@ -1,5 +1,5 @@
 // 問題を格納するリスト
-const problems = [];
+let problems = [];
 let currentProblemIndex = 0;
 
 // StartとEndのフラグ
@@ -10,17 +10,37 @@ let isEnd = false;
 let timerInterval;
 let milliseconds = 0;
 
-// 二桁の足し算と引き算の問題をランダムに作成
+// 二桁の足し算と引き算の問題をランダムに作成（必ず繰り上がり or 繰り下がりあり）
 function createQ() {
+    problems.length =20; // 初期化（必要なら）
     for (let i = 0; i < 10; i++) {
-        let num1;
+        let num1, num2, isAddition, valid;
         do {
-            num1 = Math.floor(Math.random() * 100) + 1;
-        } while ((num1 + 5 > 100) || num1 <21);
+            num1 = Math.floor(Math.random() * 90) + 10; // 10～99
+            num2 = Math.floor(Math.random() * 90) + 10;
+            isAddition = Math.random() > 0.5;
+            valid = false;
 
-            problems.push({ question: `${num1} - 5`, answer: num1 - 5, mother: num1 });
+            if (isAddition) {
+                // 加算は繰り上がりが必ず起きる
+                if ((num1 % 10) + (num2 % 10) >= 10 && num1 + num2 < 100) {
+                    valid = true;
+                }
+            } else {
+                // 減算は繰り下がりが必ず起きる
+                if (num1 >= num2 && (num1 % 10) < (num2 % 10)) {
+                    valid = true;
+                }
+            }
+        } while (!valid);
 
-}}
+        if (isAddition) {
+            problems.push({ question: `${num1} + ${num2}`, answer: num1 + num2, mother: num1 });
+        } else {
+            problems.push({ question: `${num1} - ${num2}`, answer: num1 - num2, mother: num1 });
+        }
+    }
+}
 
 // 残りの問題数を更新する関数
 function updateRemainingDisplay() {
@@ -329,11 +349,11 @@ function createLockScreen(messageText, bgColor) {
 function screen_lock() {
     let message = "Well done!!";
     let bgColor = "rgba(255,0,0,0.5)";
-    const bestRecord9 = localStorage.getItem("bestRecord9");
-    if (bestRecord9 === null || milliseconds < bestRecord9) {
-        message = "New record!!";
-        bgColor = "rgba(0,255,0,0.5)";
-    }
+    // const bestRecord9 = localStorage.getItem("bestRecord9");
+    // if (bestRecord9 === null || milliseconds < bestRecord9) {
+    //     message = "New record!!";
+    //     bgColor = "rgba(0,255,0,0.5)";
+    // }
 
     let lock_screen = createLockScreen(message, bgColor);
     document.body.appendChild(lock_screen);

@@ -1,18 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
 /* 全体のレイアウト */
+html {
+    touch-action: manipulation;
+}
 
 body {
     font-family: Arial, sans-serif;
     position: relative;
-    height:100vh;
+    height: 100vh;
     margin: 0;
     padding: 0;
 }
 
-#wrap{
-    width:100%;
-    height:100%;
-    display:flex;
+#wrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
     background-color: rgb(255, 187, 85);
     /* border-radius: 10px; */
     position: absolute;
@@ -21,9 +25,17 @@ body {
     /* transform: translate(-50%,-50%); */
 }
 
-#left-container, #right-container{
-    display:flex;
-    align-items:center;
+#left-container {
+    width:50vw;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+#right-container {
+    width:50vw;
+    display: flex;
+    align-items: center;
 }
 
 .header {
@@ -63,7 +75,8 @@ body {
     grid-row: 1 / 2;
 }
 
-#container, #container2 {
+#container,
+#container2 {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -73,7 +86,7 @@ body {
     position: relative;
 }
 
-#container{
+#container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,23 +96,23 @@ body {
     position: relative;
 }
 
-#canvas-container{
-    width:320px;
-    height:320px;
+#canvas-container {
+    width: 320px;
+    height: 320px;
     background-color: white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 10px;
 }
 
-#container2{
+#container2 {
     height: 390px;
     justify-content: flex-end;
 }
 
-#container2-sub{
-    width:320px;
+#container2-sub {
+    width: 320px;
 }
 
 
@@ -121,7 +134,7 @@ body {
     height: 70px;
     border-radius: 10px;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     background-color: white;
@@ -173,7 +186,7 @@ body {
     grid-template-rows: 40px 10px 40px 10px 40px 10px 40px 10px 40px;
 }
 
-.numbtn{
+.numbtn {
     border-color: #808080;
 }
 
@@ -297,7 +310,7 @@ button:active {
     border-color: #808080;
     border-radius: 10px;
     grid-column: 3/4;
-    grid-row:9/10
+    grid-row: 9/10
 }
 
 #back {
@@ -308,7 +321,7 @@ button:active {
     border-color: #808080;
     border-radius: 10px;
     grid-column: 5/6;
-    grid-row:9/10
+    grid-row: 9/10
 }
 
 /* .btnArea {
@@ -319,41 +332,56 @@ button:active {
 
 /* メディアクエリ：スマホサイズ以下の場合のスタイル */
 @media screen and (max-width: 768px) {
+
     /* #wrapを縦並びに変更 */
-    .header{
-        margin-top:5px;
+    .header {
+        margin-top: 5px;
     }
 
     #wrap {
-        flex-direction: column; /* 縦並びに変更 */
-        width: 100%; /* 幅を100%に変更 */
-        height: 100%; /* 高さを100%に変更 */
-        padding: 10px; /* 内側の余白を少し減らす */
+        flex-direction: column;
+        /* 縦並びに変更 */
+        width: 100%;
+        /* 幅を100%に変更 */
+        height: 100%;
+        /* 高さを100%に変更 */
+        padding: 10px;
+        /* 内側の余白を少し減らす */
     }
 
     /* 左右コンテナを縦並びにする */
-    #left-container, #right-container {
-        width: 100%; /* 横幅を100%に変更 */
-        height: auto; /* 高さを自動調整 */
-        margin-bottom: 20px; /* 下部にスペースを追加 */
+    #left-container,
+    #right-container {
+        width: 100%;
+        /* 横幅を100%に変更 */
+        height: auto;
+        /* 高さを自動調整 */
+        margin-bottom: 20px;
+        /* 下部にスペースを追加 */
     }
 
     /* #container と #container2 の幅と高さを調整 */
-    #container, #container2 {
-        width: 100%; /* 幅を90%に調整 */
-        height: 100%; /* 高さを自動調整 */
-        margin: 0 auto; /* 中央揃え */
+    #container,
+    #container2 {
+        width: 100%;
+        /* 幅を90%に調整 */
+        height: 100%;
+        /* 高さを自動調整 */
+        margin: 0 auto;
+        /* 中央揃え */
     }
 
     /* canvas-containerのサイズを調整 */
     #canvas-container {
-        width: 280px; /* 幅を少し小さく */
-        height: 280px; /* 高さも調整 */
+        width: 280px;
+        /* 幅を少し小さく */
+        height: 280px;
+        /* 高さも調整 */
     }
 
-    .canvas{
-        width:90%;
-        height:90%;
+    .canvas {
+        width: 90%;
+        height: 90%;
     }
 
     #numberButtons {
@@ -377,7 +405,8 @@ button:active {
 
 
     /* フォントサイズとボタンの幅、高さを調整 */
-    #submitAnswerButton, #clearButton {
+    #submitAnswerButton,
+    #clearButton {
         font-size: 18px;
         width: 120px;
         height: 30px;
