@@ -405,11 +405,16 @@ button:active {
 
 
     /* フォントサイズとボタンの幅、高さを調整 */
-    #submitAnswerButton,
-    #clearButton {
+    #submitAnswerButton {
         font-size: 18px;
         width: 120px;
         height: 90px;
+    }
+    
+     #clearButton {
+        font-size: 18px;
+        width: 120px;
+        height: 30px;
     }
 
     /* #start, #reset, #back {
