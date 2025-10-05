@@ -13,15 +13,31 @@ let milliseconds = 0;
 // 二桁の足し算と引き算の問題をランダムに作成
 function createQ() {
     for (let i = 0; i < 10; i++) {
-        let num1, num2, isAddition;
+        let num1, num2, isAddition, valid;
         do {
-            num1 = Math.floor(Math.random() * 100) + 1;
-            // num2 = Math.floor(Math.random() * 90) + 10;
-            // isAddition = Math.random() > 0.5;
-        } while ((num1 + 5 > 100)|| num1 <21);
+            num1 = Math.floor(Math.random() * 90) + 10; // 10～99
+            num2 = Math.floor(Math.random() * 90) + 10;
+            isAddition = Math.random() > 0.5;
+            valid = false;
 
-            problems.push({ question: `${num1} + 5`, answer: num1 + 5, mother: num1 });
+            if (isAddition) {
+                // 加算は繰り上がりが必ず起きる
+                if ((num1 % 10) + (num2 % 10) >= 10 && num1 + num2 < 100) {
+                    valid = true;
+                }
+            } else {
+                // 減算は繰り下がりが必ず起きる
+                if (num1 >= num2 && (num1 % 10) < (num2 % 10)) {
+                    valid = true;
+                }
+            }
+        } while (!valid);
 
+        if (isAddition) {
+            problems.push({ question: `${num1} + ${num2}`, answer: num1 + num2, mother: num1 });
+        } else {
+            problems.push({ question: `${num1} - ${num2}`, answer: num1 - num2, mother: num1 });
+        }
     }
 }
 
