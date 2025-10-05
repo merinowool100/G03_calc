@@ -313,7 +313,7 @@ button:active {
     grid-row: 9/10
 }
 
-#back {
+/* #back {
     width: 100px;
     height: 40px;
     font-size: 20px;
@@ -322,7 +322,7 @@ button:active {
     border-radius: 10px;
     grid-column: 5/6;
     grid-row: 9/10
-}
+} */
 
 /* .btnArea {
     display:grid;
