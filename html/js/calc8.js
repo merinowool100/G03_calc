@@ -12,7 +12,7 @@ let milliseconds = 0;
 
 // 二桁の足し算と引き算の問題をランダムに作成
 function createQ() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
         let num1, num2, isAddition, valid;
         do {
             num1 = Math.floor(Math.random() * 90) + 10; // 10～99
