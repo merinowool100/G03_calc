@@ -97,6 +97,42 @@
     });
   }
 
+  /** 2けた±2けたで、いちの位・十の位ともくり上がり・くり下がりなし */
+  function createTwoDigitNoRegroupProblems() {
+    return createBasicLevel({
+      generator(index) {
+        let num1;
+        let num2;
+        const isAddition = index % 2 === 0;
+        let valid;
+        do {
+          num1 = randomInt(10, 99);
+          num2 = randomInt(10, 99);
+          valid = false;
+          if (isAddition) {
+            const ones = (num1 % 10) + (num2 % 10);
+            const tens =
+              Math.floor(num1 / 10) +
+              Math.floor(num2 / 10) +
+              Math.floor(ones / 10);
+            valid = ones < 10 && tens < 10 && num1 + num2 <= 99;
+          } else {
+            valid =
+              num1 >= num2 &&
+              num1 % 10 >= num2 % 10 &&
+              Math.floor(num1 / 10) >= Math.floor(num2 / 10);
+          }
+        } while (!valid);
+
+        return {
+          question: isAddition ? `${num1} + ${num2}` : `${num1} - ${num2}`,
+          answer: isAddition ? num1 + num2 : num1 - num2,
+          mother: num1,
+        };
+      },
+    });
+  }
+
   function createBridgeToHundredsProblems() {
     return createBasicLevel({
       generator() {
@@ -450,6 +486,7 @@
   window.LEVEL_DEFS = {
     1: {
       label: "Lv.1",
+      summary: "1けたのたしざん",
       storageKey: "bestRecord1",
       grid: "5",
       motherMode: "5",
@@ -463,6 +500,7 @@
     },
     2: {
       label: "Lv.2",
+      summary: "20までのひきざん",
       storageKey: "bestRecord2",
       grid: "5",
       motherMode: "5",
@@ -480,6 +518,7 @@
     },
     3: {
       label: "Lv.3",
+      summary: "11〜20 +5",
       storageKey: "bestRecord3",
       grid: "5",
       motherMode: "5",
@@ -492,9 +531,10 @@
     },
     4: {
       label: "Lv.4",
+      summary: "11〜20 −5",
       storageKey: "bestRecord4",
       grid: "5",
-      motherMode: "10",
+      motherMode: "5",
       createProblems: createBasicLevel({
         generator() {
           const a = randomInt(11, 20);
@@ -504,6 +544,7 @@
     },
     5: {
       label: "Lv.5",
+      summary: "11〜20のたしざん",
       storageKey: "bestRecord5",
       grid: "5",
       motherMode: "5",
@@ -521,6 +562,7 @@
     },
     6: {
       label: "Lv.6",
+      summary: "11〜20のひきざん",
       storageKey: "bestRecord6",
       grid: "5",
       motherMode: "5",
@@ -537,22 +579,25 @@
       }),
     },
     7: {
-      label: "Lv.7",
+      label: "Lv.9",
+      summary: "2けたのたし・ひき算（くりあり②）",
       storageKey: "bestRecord7",
       grid: "10",
       motherMode: "10",
       createProblems: createCarryBorrowProblems(),
     },
     8: {
-      label: "Lv.8",
+      label: "Lv.7",
+      summary: "2けたのたし・ひき算（くりなし）",
       storageKey: "bestRecord8",
       legacyStorageKeys: ["bestRecord"],
       grid: "10",
       motherMode: "10",
-      createProblems: createTwoDigitMixedProblems(),
+      createProblems: createTwoDigitNoRegroupProblems(),
     },
     9: {
-      label: "Lv.9",
+      label: "Lv.8",
+      summary: "2けたのたし・ひき算（くりあり①）",
       storageKey: "bestRecord9",
       grid: "10",
       motherMode: "10",
@@ -577,6 +622,7 @@
     },
     10: {
       label: "Lv.10",
+      summary: "3項計算①",
       storageKey: "bestRecord10",
       legacyStorageKeys: ["bestRecord11"],
       grid: "10",
@@ -585,6 +631,7 @@
     },
     11: {
       label: "Lv.11",
+      summary: "3項計算②",
       storageKey: "bestRecord11",
       legacyStorageKeys: ["bestRecord12"],
       grid: "10",
@@ -593,6 +640,7 @@
     },
     12: {
       label: "Lv.12",
+      summary: "3けた±1けた",
       storageKey: "bestRecord12",
       legacyStorageKeys: ["bestRecord13", "bestRecord14"],
       grid: "10",
@@ -601,6 +649,7 @@
     },
     13: {
       label: "Lv.13",
+      summary: "3けた±2けたまで",
       storageKey: "bestRecord13",
       legacyStorageKeys: ["bestRecord15"],
       grid: "10",
@@ -609,6 +658,7 @@
     },
     14: {
       label: "Lv.14",
+      summary: "3けた±3けたまで",
       storageKey: "bestRecord14",
       legacyStorageKeys: ["bestRecord16"],
       grid: "10",
@@ -617,6 +667,7 @@
     },
     15: {
       label: "Lv.15",
+      summary: "3けたミックス",
       storageKey: "bestRecord15",
       legacyStorageKeys: ["bestRecord17"],
       grid: "10",
@@ -629,6 +680,7 @@
     },
     16: {
       label: "Lv.16",
+      summary: "かけざん（2・5・10の段）",
       storageKey: "bestRecord16",
       legacyStorageKeys: ["bestRecord18"],
       grid: "10",
@@ -637,6 +689,7 @@
     },
     17: {
       label: "Lv.17",
+      summary: "かけざん（3・4の段）",
       storageKey: "bestRecord17",
       legacyStorageKeys: ["bestRecord19"],
       grid: "10",
@@ -645,6 +698,7 @@
     },
     18: {
       label: "Lv.18",
+      summary: "かけざん（6〜9の段）",
       storageKey: "bestRecord18",
       legacyStorageKeys: ["bestRecord20"],
       grid: "10",
@@ -653,6 +707,7 @@
     },
     19: {
       label: "Lv.19",
+      summary: "かけざんミックス",
       storageKey: "bestRecord19",
       legacyStorageKeys: ["bestRecord21"],
       grid: "10",
@@ -665,6 +720,7 @@
     },
     20: {
       label: "Lv.20",
+      summary: "10いじょう×1けた",
       storageKey: "bestRecord20",
       legacyStorageKeys: ["bestRecord22"],
       grid: "10",
@@ -673,6 +729,7 @@
     },
     21: {
       label: "Lv.21",
+      summary: "11〜19×同じ数（平方・9問）",
       storageKey: "bestRecord21",
       legacyStorageKeys: ["bestRecord23"],
       problemCount: 9,
@@ -682,6 +739,7 @@
     },
     22: {
       label: "Lv.22",
+      summary: "わりざん（2・5の段）",
       storageKey: "bestRecord22",
       legacyStorageKeys: ["bestRecord24", "bestRecord28"],
       grid: "10",
@@ -690,6 +748,7 @@
     },
     23: {
       label: "Lv.23",
+      summary: "わりざん（3・4の段）",
       storageKey: "bestRecord23",
       legacyStorageKeys: ["bestRecord25", "bestRecord29"],
       grid: "10",
@@ -698,6 +757,7 @@
     },
     24: {
       label: "Lv.24",
+      summary: "わりざん（6〜9の段）",
       storageKey: "bestRecord24",
       legacyStorageKeys: ["bestRecord26", "bestRecord30"],
       grid: "10",
@@ -706,6 +766,7 @@
     },
     25: {
       label: "Lv.25",
+      summary: "わりざんミックス",
       storageKey: "bestRecord25",
       grid: "10",
       motherMode: "10",

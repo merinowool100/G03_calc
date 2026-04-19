@@ -942,6 +942,7 @@
   }
 
   function init() {
+    document.documentElement.dataset.playLevel = String(levelId);
     document.title = def.label;
     const topSpan = document.querySelector("#top span");
     if (topSpan) topSpan.textContent = def.label;
