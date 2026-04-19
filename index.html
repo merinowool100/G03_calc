@@ -1,50 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./html/css/reset.css">
-    <link rel="stylesheet" href="./html/css/toppage.css">
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
+    />
+    <link rel="stylesheet" href="./html/css/reset.css" />
+    <link rel="stylesheet" href="./html/css/toppage.css" />
+    <script src="./html/js/levels-config.js"></script>
     <title>Calc.</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="wrap">
-        <div id="topPageTitle">Calc.</div>
-        <div id="l-container">
-            <div id="container">
-                <!-- <div id="box1"> -->
-                <button id="box1" class="btn">Lv.1</button>
-                <button id="box2" class="btn">Lv.2</button>
-                <button id="box3" class="btn">Lv.3</button>
-                <button id="box4" class="btn">Lv.4</button>
-                <button id="box5" class="btn">Lv.5</button>
-                <button id="box6" class="btn">Lv.6</button>
-                <button id="box7" class="btn">Lv.7</button>
-                <button id="box8" class="btn">Lv.8</button>
-                <button id="box9" class="btn">Lv.X</button>
-                <button id="box10" class="btn">Lv.10</button>
-                <!-- </div> -->
-                 <div id="bottom-space" style="height:100px;"></div>
-            </div>
-        </div>
+      <div id="topPageTitle">Calc.</div>
+      <div id="l-container">
+        <div id="container"></div>
+      </div>
     </div>
-</body>
+    <script>
+      const container = document.getElementById("container");
+      const levels = Object.keys(window.LEVEL_DEFS)
+        .map(Number)
+        .sort((a, b) => a - b);
 
-<script>
-    document.getElementById("box1").addEventListener("click",()=>{ window.location.href='./html/lv1.html';});
-    document.getElementById("box2").addEventListener("click",()=>{ window.location.href='./html/lv2.html';});
-    document.getElementById("box3").addEventListener("click",()=>{ window.location.href='./html/lv3.html';});
-    document.getElementById("box4").addEventListener("click",()=>{ window.location.href='./html/lv4.html';});
-    document.getElementById("box5").addEventListener("click",()=>{ window.location.href='./html/lv5.html';});
-    document.getElementById("box6").addEventListener("click",()=>{ window.location.href='./html/lv6.html';});
-    document.getElementById("box7").addEventListener("click",()=>{ window.location.href='./html/lv7.html';});
-    document.getElementById("box8").addEventListener("click",()=>{ window.location.href='./html/lv8.html';});
-    document.getElementById("box9").addEventListener("click",()=>{ window.location.href='./html/lv9.html';});
-    document.getElementById("box10").addEventListener("click",()=>{ window.location.href='./html/lv10.html';});
-
-</script>
-
-
+      levels.forEach((level) => {
+        const button = document.createElement("button");
+        button.className = "btn";
+        button.type = "button";
+        button.textContent = window.LEVEL_DEFS[level].label;
+        button.addEventListener("click", () => {
+          window.location.href = "./html/play.html?level=" + level;
+        });
+        container.appendChild(button);
+      });
+    </script>
+  </body>
 </html>
