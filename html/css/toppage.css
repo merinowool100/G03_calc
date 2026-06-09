@@ -125,6 +125,7 @@ body {
   );
   color: var(--text);
   font-family: inherit;
+  text-decoration: none;
   cursor: pointer;
   box-shadow: var(--shadow-lg);
   transition:

@@ -8,7 +8,6 @@
     />
     <link rel="stylesheet" href="./html/css/reset.css" />
     <link rel="stylesheet" href="./html/css/toppage.css" />
-    <script src="./html/js/levels-config.js"></script>
     <title>Calc.</title>
   </head>
 
@@ -19,47 +18,52 @@
         <div id="menu-container">
           <section class="menu-section">
             <h2 class="menu-section__title">イメトレ</h2>
-            <div
-              class="menu-section__grid menu-section__grid--single"
-              id="imagetore-menu"
-            ></div>
+            <div class="menu-section__grid menu-section__grid--single">
+              <a class="level-card" href="./html/play.html?mode=imagetore">
+                <span class="level-card__badge">イメトレ</span>
+                <span class="level-card__summary">マス目を塗って答える</span>
+              </a>
+            </div>
           </section>
           <section class="menu-section">
             <h2 class="menu-section__title">九九マスター</h2>
-            <div class="menu-section__grid" id="master-menu"></div>
+            <div class="menu-section__grid">
+              <a class="level-card" href="./html/play.html?mode=master2">
+                <span class="level-card__badge">2の段</span>
+                <span class="level-card__summary">2 × 1 〜 2 × 9</span>
+              </a>
+              <a class="level-card" href="./html/play.html?mode=master3">
+                <span class="level-card__badge">3の段</span>
+                <span class="level-card__summary">3 × 1 〜 3 × 9</span>
+              </a>
+              <a class="level-card" href="./html/play.html?mode=master4">
+                <span class="level-card__badge">4の段</span>
+                <span class="level-card__summary">4 × 1 〜 4 × 9</span>
+              </a>
+              <a class="level-card" href="./html/play.html?mode=master5">
+                <span class="level-card__badge">5の段</span>
+                <span class="level-card__summary">5 × 1 〜 5 × 9</span>
+              </a>
+              <a class="level-card" href="./html/play.html?mode=master6">
+                <span class="level-card__badge">6の段</span>
+                <span class="level-card__summary">6 × 1 〜 6 × 9</span>
+              </a>
+              <a class="level-card" href="./html/play.html?mode=master7">
+                <span class="level-card__badge">7の段</span>
+                <span class="level-card__summary">7 × 1 〜 7 × 9</span>
+              </a>
+              <a class="level-card" href="./html/play.html?mode=master8">
+                <span class="level-card__badge">8の段</span>
+                <span class="level-card__summary">8 × 1 〜 8 × 9</span>
+              </a>
+              <a class="level-card" href="./html/play.html?mode=master9">
+                <span class="level-card__badge">9の段</span>
+                <span class="level-card__summary">9 × 1 〜 9 × 9</span>
+              </a>
+            </div>
           </section>
         </div>
       </div>
     </div>
-    <script>
-      const MODES = window.GAME_MODES;
-
-      function createModeCard(modeId, def) {
-        const button = document.createElement("button");
-        button.className = "level-card";
-        button.type = "button";
-        const badge = document.createElement("span");
-        badge.className = "level-card__badge";
-        badge.textContent = def.label;
-        const summary = document.createElement("span");
-        summary.className = "level-card__summary";
-        summary.textContent = def.summary || "";
-        button.appendChild(badge);
-        button.appendChild(summary);
-        button.addEventListener("click", () => {
-          window.location.href = "./html/play.html?mode=" + modeId;
-        });
-        return button;
-      }
-
-      const imagetoreMenu = document.getElementById("imagetore-menu");
-      imagetoreMenu.appendChild(createModeCard("imagetore", MODES.imagetore));
-
-      const masterMenu = document.getElementById("master-menu");
-      for (let table = 2; table <= 9; table++) {
-        const modeId = "master" + table;
-        masterMenu.appendChild(createModeCard(modeId, MODES[modeId]));
-      }
-    </script>
   </body>
 </html>
