@@ -14,8 +14,9 @@
   let timerInterval = null;
   let ticks = 0;
   let paintedCells = new Set();
+  let dragPreviewCells = new Set();
   let isPainting = false;
-  let paintMode = true;
+  let dragStartCell = null;
 
   const canvas = document.querySelector(".canvas");
   const context = canvas.getContext("2d");
@@ -83,6 +84,9 @@
 
   function clearPaintedCells() {
     paintedCells.clear();
+    dragPreviewCells.clear();
+    dragStartCell = null;
+    isPainting = false;
   }
 
   function syncCanvasSize() {
@@ -130,16 +134,38 @@
     context.strokeRect(0.5, 0.5, sz - 1, sz - 1);
   }
 
-  function renderImagetoreGrid() {
-    if (!isImagetore) return;
+  function fillCellsOnCanvas(cells, color) {
     const sz = canvas.width;
     const cell = sz / GRID_COUNT;
-    context.clearRect(0, 0, sz, sz);
-    context.fillStyle = "rgba(255, 150, 0, 0.5)";
-    paintedCells.forEach((key) => {
+    context.fillStyle = color;
+    cells.forEach((key) => {
       const [row, col] = key.split(",").map(Number);
       context.fillRect(col * cell + 1, row * cell + 1, cell - 2, cell - 2);
     });
+  }
+
+  function rectCellKeys(row1, col1, row2, col2) {
+    const minR = Math.min(row1, row2);
+    const maxR = Math.max(row1, row2);
+    const minC = Math.min(col1, col2);
+    const maxC = Math.max(col1, col2);
+    const keys = new Set();
+    for (let row = minR; row <= maxR; row++) {
+      for (let col = minC; col <= maxC; col++) {
+        keys.add(cellKey(row, col));
+      }
+    }
+    return keys;
+  }
+
+  function renderImagetoreGrid() {
+    if (!isImagetore) return;
+    const sz = canvas.width;
+    context.clearRect(0, 0, sz, sz);
+    fillCellsOnCanvas(paintedCells, "rgba(255, 150, 0, 0.5)");
+    if (isPainting && dragPreviewCells.size > 0) {
+      fillCellsOnCanvas(dragPreviewCells, "rgba(255, 150, 0, 0.28)");
+    }
     drawGridLines();
   }
 
@@ -169,16 +195,6 @@
     return { row, col };
   }
 
-  function applyPaintAt(row, col) {
-    const key = cellKey(row, col);
-    if (paintMode) {
-      paintedCells.add(key);
-    } else {
-      paintedCells.delete(key);
-    }
-    renderImagetoreGrid();
-  }
-
   function handlePointerDown(event) {
     if (!isImagetore || !isStarted || isEnd) return;
     const point = event.touches ? event.touches[0] : event;
@@ -186,21 +202,38 @@
     if (!cell) return;
     event.preventDefault();
     isPainting = true;
-    paintMode = !paintedCells.has(cellKey(cell.row, cell.col));
-    applyPaintAt(cell.row, cell.col);
+    dragStartCell = cell;
+    paintedCells.clear();
+    dragPreviewCells = rectCellKeys(cell.row, cell.col, cell.row, cell.col);
+    renderImagetoreGrid();
   }
 
   function handlePointerMove(event) {
-    if (!isPainting || !isImagetore || !isStarted || isEnd) return;
+    if (!isPainting || !dragStartCell || !isImagetore || !isStarted || isEnd) {
+      return;
+    }
     const point = event.touches ? event.touches[0] : event;
     const cell = getCellFromPointer(point.clientX, point.clientY);
     if (!cell) return;
     event.preventDefault();
-    applyPaintAt(cell.row, cell.col);
+    dragPreviewCells = rectCellKeys(
+      dragStartCell.row,
+      dragStartCell.col,
+      cell.row,
+      cell.col,
+    );
+    renderImagetoreGrid();
   }
 
   function handlePointerUp() {
+    if (!isPainting || !isImagetore) return;
     isPainting = false;
+    if (dragPreviewCells.size > 0) {
+      paintedCells = new Set(dragPreviewCells);
+    }
+    dragPreviewCells = new Set();
+    dragStartCell = null;
+    renderImagetoreGrid();
   }
 
   function isValidRectangle(a, b) {
@@ -253,8 +286,22 @@
   function showFeedback(isCorrect) {
     const feedback = getFeedbackEl();
     if (!feedback) return;
-    feedback.textContent = isCorrect ? "Correct" : "Wrong";
-    feedback.style.color = isCorrect ? "green" : "red";
+    feedback.classList.remove(
+      "feedback-mark--correct",
+      "feedback-mark--wrong",
+      "feedback-text",
+    );
+    if (isImagetore) {
+      feedback.textContent = isCorrect ? "Correct" : "Wrong";
+      feedback.classList.add("feedback-text");
+      feedback.style.color = isCorrect ? "green" : "red";
+    } else {
+      feedback.textContent = isCorrect ? "○" : "×";
+      feedback.classList.add(
+        isCorrect ? "feedback-mark--correct" : "feedback-mark--wrong",
+      );
+      feedback.style.color = "";
+    }
     feedback.style.display = "block";
     feedback.classList.remove("hidden");
 

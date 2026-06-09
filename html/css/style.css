@@ -131,9 +131,26 @@ body {
 
 #feedback-calc {
   position: absolute;
-  top: 42%;
+  top: 38%;
   left: 50%;
   transform: translateX(-50%);
+  display: none;
+  font-weight: 800;
+  line-height: 1;
+  pointer-events: none;
+  text-shadow: 0 10px 24px rgba(255, 255, 255, 0.8);
+}
+
+html[data-play-mode="master"] #feedback-calc {
+  font-size: clamp(120px, 30vmin, 220px);
+}
+
+html[data-play-mode="master"] #feedback-calc.feedback-mark--correct {
+  color: #2f9445;
+}
+
+html[data-play-mode="master"] #feedback-calc.feedback-mark--wrong {
+  color: #dd4a22;
 }
 
 .left-panel-stack > #canvas-container {
