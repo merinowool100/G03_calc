@@ -140,7 +140,7 @@
     context.fillStyle = color;
     cells.forEach((key) => {
       const [row, col] = key.split(",").map(Number);
-      context.fillRect(col * cell + 1, row * cell + 1, cell - 2, cell - 2);
+      context.fillRect(col * cell, row * cell, cell, cell);
     });
   }
 
@@ -162,11 +162,11 @@
     if (!isImagetore) return;
     const sz = canvas.width;
     context.clearRect(0, 0, sz, sz);
-    fillCellsOnCanvas(paintedCells, "rgba(255, 150, 0, 0.5)");
-    if (isPainting && dragPreviewCells.size > 0) {
-      fillCellsOnCanvas(dragPreviewCells, "rgba(255, 150, 0, 0.28)");
-    }
     drawGridLines();
+    fillCellsOnCanvas(paintedCells, "rgba(255, 150, 0, 0.62)");
+    if (isPainting && dragPreviewCells.size > 0) {
+      fillCellsOnCanvas(dragPreviewCells, "rgba(255, 150, 0, 0.38)");
+    }
   }
 
   function renderGuide() {
@@ -175,58 +175,42 @@
     renderImagetoreGrid();
   }
 
-  function getCellFromPointer(clientX, clientY) {
+  function getCellFromPointer(clientX, clientY, clampToEdge = false) {
     const rect = canvas.getBoundingClientRect();
-    if (
-      clientX < rect.left ||
-      clientX > rect.right ||
-      clientY < rect.top ||
-      clientY > rect.bottom
-    ) {
-      return null;
-    }
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-    const col = Math.floor((x / rect.width) * GRID_COUNT);
-    const row = Math.floor((y / rect.height) * GRID_COUNT);
-    if (row < 0 || row >= GRID_COUNT || col < 0 || col >= GRID_COUNT) {
-      return null;
-    }
+    if (rect.width <= 0 || rect.height <= 0) return null;
+
+    let x = clientX - rect.left;
+    let y = clientY - rect.top;
+    const inside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+    if (!inside && !clampToEdge) return null;
+
+    x = Math.max(0, Math.min(x, rect.width - 0.001));
+    y = Math.max(0, Math.min(y, rect.height - 0.001));
+
+    const col = Math.min(
+      GRID_COUNT - 1,
+      Math.floor((x / rect.width) * GRID_COUNT),
+    );
+    const row = Math.min(
+      GRID_COUNT - 1,
+      Math.floor((y / rect.height) * GRID_COUNT),
+    );
     return { row, col };
   }
 
-  function handlePointerDown(event) {
-    if (!isImagetore || !isStarted || isEnd) return;
-    const point = event.touches ? event.touches[0] : event;
-    const cell = getCellFromPointer(point.clientX, point.clientY);
-    if (!cell) return;
-    event.preventDefault();
-    isPainting = true;
-    dragStartCell = cell;
-    paintedCells.clear();
-    dragPreviewCells = rectCellKeys(cell.row, cell.col, cell.row, cell.col);
-    renderImagetoreGrid();
-  }
-
-  function handlePointerMove(event) {
-    if (!isPainting || !dragStartCell || !isImagetore || !isStarted || isEnd) {
-      return;
-    }
-    const point = event.touches ? event.touches[0] : event;
-    const cell = getCellFromPointer(point.clientX, point.clientY);
-    if (!cell) return;
-    event.preventDefault();
+  function updateDragPreview(endCell) {
+    if (!dragStartCell || !endCell) return;
     dragPreviewCells = rectCellKeys(
       dragStartCell.row,
       dragStartCell.col,
-      cell.row,
-      cell.col,
+      endCell.row,
+      endCell.col,
     );
     renderImagetoreGrid();
   }
 
-  function handlePointerUp() {
-    if (!isPainting || !isImagetore) return;
+  function finishDrag() {
+    if (!isImagetore || !isPainting) return;
     isPainting = false;
     if (dragPreviewCells.size > 0) {
       paintedCells = new Set(dragPreviewCells);
@@ -234,6 +218,41 @@
     dragPreviewCells = new Set();
     dragStartCell = null;
     renderImagetoreGrid();
+  }
+
+  function handlePointerDown(event) {
+    if (!isImagetore || !isStarted || isEnd) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    const cell = getCellFromPointer(event.clientX, event.clientY);
+    if (!cell) return;
+    event.preventDefault();
+    canvas.setPointerCapture(event.pointerId);
+    isPainting = true;
+    dragStartCell = cell;
+    paintedCells.clear();
+    updateDragPreview(cell);
+  }
+
+  function handlePointerMove(event) {
+    if (!isPainting || !dragStartCell || !isImagetore || !isStarted || isEnd) {
+      return;
+    }
+    const cell = getCellFromPointer(event.clientX, event.clientY, true);
+    if (!cell) return;
+    event.preventDefault();
+    updateDragPreview(cell);
+  }
+
+  function handlePointerUp(event) {
+    if (!isImagetore) return;
+    if (canvas.hasPointerCapture(event.pointerId)) {
+      canvas.releasePointerCapture(event.pointerId);
+    }
+    if (isPainting) {
+      const cell = getCellFromPointer(event.clientX, event.clientY, true);
+      if (cell) updateDragPreview(cell);
+      finishDrag();
+    }
   }
 
   function isValidRectangle(a, b) {
@@ -514,17 +533,10 @@
     });
 
     if (isImagetore) {
-      canvas.addEventListener("mousedown", handlePointerDown);
-      canvas.addEventListener("mousemove", handlePointerMove);
-      window.addEventListener("mouseup", handlePointerUp);
-      canvas.addEventListener("touchstart", handlePointerDown, {
-        passive: false,
-      });
-      canvas.addEventListener("touchmove", handlePointerMove, {
-        passive: false,
-      });
-      canvas.addEventListener("touchend", handlePointerUp);
-      canvas.addEventListener("touchcancel", handlePointerUp);
+      canvas.addEventListener("pointerdown", handlePointerDown);
+      canvas.addEventListener("pointermove", handlePointerMove);
+      canvas.addEventListener("pointerup", handlePointerUp);
+      canvas.addEventListener("pointercancel", handlePointerUp);
     }
   }
 

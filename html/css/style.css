@@ -269,6 +269,8 @@ html[data-play-mode="master"] #feedback-calc.feedback-mark--wrong {
 html[data-play-mode="imagetore"] .canvas {
   cursor: crosshair;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #container2-sub {
