@@ -241,6 +241,11 @@ body {
   box-sizing: border-box;
 }
 
+html[data-play-mode="imagetore"] .canvas {
+  cursor: crosshair;
+  touch-action: none;
+}
+
 #container2-sub {
   width: 100%;
   max-width: 100%;
@@ -303,16 +308,44 @@ body {
   text-align: left;
 }
 
-/* Lv.10–11: 三項式が長いので1行用に縮小 */
-html[data-play-level="10"] #problemDisplay,
-html[data-play-level="11"] #problemDisplay {
-  font-size: clamp(22px, 4.2vmin, 40px);
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: normal;
-  overflow-x: auto;
-  overflow-y: hidden;
+html[data-play-mode="imagetore"] #answerArea,
+html[data-play-mode="imagetore"] .numbtn {
+  display: none;
+}
+
+html[data-play-mode="imagetore"] #problemDisplayContainer {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+html[data-play-mode="imagetore"] #problemDisplay {
+  text-align: center;
+}
+
+html[data-play-mode="master"] #left-container {
+  flex: 0 0 auto;
+}
+
+html[data-play-mode="master"] .left-panel-stack {
+  grid-template-rows: auto;
+}
+
+html[data-play-mode="master"] #wrap {
+  flex-direction: column;
+}
+
+@media screen and (min-width: 769px) {
+  html[data-play-mode="master"] #wrap {
+    flex-direction: row;
+  }
+
+  html[data-play-mode="master"] #left-container {
+    flex: 0 0 280px;
+  }
+
+  html[data-play-mode="master"] #right-container {
+    flex: 1 1 auto;
+  }
 }
 
 #answerArea {
@@ -578,16 +611,6 @@ html[data-play-level="11"] #problemDisplay {
     font-size: clamp(34px, 9.2vw, 54px);
   }
 
-  html[data-play-level="10"] #problemDisplay,
-  html[data-play-level="11"] #problemDisplay {
-    font-size: clamp(17px, 4.2vw, 30px);
-    white-space: nowrap;
-    overflow-wrap: normal;
-    word-break: normal;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
   #answerArea {
     justify-content: center;
   }
@@ -617,15 +640,5 @@ html[data-play-level="11"] #problemDisplay {
 
   #problemDisplay {
     font-size: clamp(32px, 5vmin, 52px);
-  }
-
-  html[data-play-level="10"] #problemDisplay,
-  html[data-play-level="11"] #problemDisplay {
-    font-size: clamp(20px, 3.6vmin, 38px);
-    white-space: nowrap;
-    overflow-wrap: normal;
-    word-break: normal;
-    overflow-x: auto;
-    overflow-y: hidden;
   }
 }

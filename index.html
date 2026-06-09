@@ -16,25 +16,25 @@
     <div id="wrap">
       <div id="topPageTitle">Calc.</div>
       <div id="l-container">
-        <div id="container"></div>
+        <div id="menu-container">
+          <section class="menu-section">
+            <h2 class="menu-section__title">イメトレ</h2>
+            <div
+              class="menu-section__grid menu-section__grid--single"
+              id="imagetore-menu"
+            ></div>
+          </section>
+          <section class="menu-section">
+            <h2 class="menu-section__title">九九マスター</h2>
+            <div class="menu-section__grid" id="master-menu"></div>
+          </section>
+        </div>
       </div>
     </div>
     <script>
-      const container = document.getElementById("container");
-      function menuOrder(id) {
-        if (id <= 6) return id;
-        if (id === 8) return 7;
-        if (id === 9) return 8;
-        if (id === 7) return 9;
-        return id;
-      }
+      const MODES = window.GAME_MODES;
 
-      const levels = Object.keys(window.LEVEL_DEFS)
-        .map(Number)
-        .sort((a, b) => menuOrder(a) - menuOrder(b));
-
-      levels.forEach((level) => {
-        const def = window.LEVEL_DEFS[level];
+      function createModeCard(modeId, def) {
         const button = document.createElement("button");
         button.className = "level-card";
         button.type = "button";
@@ -47,10 +47,19 @@
         button.appendChild(badge);
         button.appendChild(summary);
         button.addEventListener("click", () => {
-          window.location.href = "./html/play.html?level=" + level;
+          window.location.href = "./html/play.html?mode=" + modeId;
         });
-        container.appendChild(button);
-      });
+        return button;
+      }
+
+      const imagetoreMenu = document.getElementById("imagetore-menu");
+      imagetoreMenu.appendChild(createModeCard("imagetore", MODES.imagetore));
+
+      const masterMenu = document.getElementById("master-menu");
+      for (let table = 2; table <= 9; table++) {
+        const modeId = "master" + table;
+        masterMenu.appendChild(createModeCard(modeId, MODES[modeId]));
+      }
     </script>
   </body>
 </html>
