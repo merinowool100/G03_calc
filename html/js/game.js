@@ -61,6 +61,22 @@
     if (br) br.textContent = `Best: ${formatTimerDisplay(Number(value) || 0)}`;
   }
 
+  function setRemainingDisplay(value) {
+    const text = String(value);
+    const remaining = el("remainingDisplay");
+    const calcRemaining = el("calc-remaining");
+    if (remaining) remaining.textContent = text;
+    if (calcRemaining) calcRemaining.textContent = text;
+  }
+
+  function setTimerDisplay(value) {
+    const text = formatTimerDisplay(value);
+    const timer = el("timer-display");
+    const calcTimer = el("calc-timer-display");
+    if (timer) timer.textContent = text;
+    if (calcTimer) calcTimer.textContent = text;
+  }
+
   function cellKey(row, col) {
     return `${row},${col}`;
   }
@@ -197,8 +213,8 @@
     });
     const minR = Math.min(...cells.map((c) => c.row));
     const maxR = Math.max(...cells.map((c) => c.row));
-    const minC = Math.min(...cells.map((c) => c.c));
-    const maxC = Math.max(...cells.map((c) => c.c));
+    const minC = Math.min(...cells.map((c) => c.col));
+    const maxC = Math.max(...cells.map((c) => c.col));
     const height = maxR - minR + 1;
     const width = maxC - minC + 1;
 
@@ -218,9 +234,7 @@
     const currentProblem = problems[currentProblemIndex];
     const suffix = isImagetore ? "" : " =";
     el("problemDisplay").textContent = `${currentProblem.question}${suffix}`;
-    el("remainingDisplay").textContent = String(
-      problems.length - currentProblemIndex,
-    );
+    setRemainingDisplay(problems.length - currentProblemIndex);
     if (isImagetore) {
       clearPaintedCells();
       renderImagetoreGrid();
@@ -232,8 +246,13 @@
     el("answerInput").value += numStr;
   }
 
+  function getFeedbackEl() {
+    return isImagetore ? el("feedback") : el("feedback-calc");
+  }
+
   function showFeedback(isCorrect) {
-    const feedback = el("feedback");
+    const feedback = getFeedbackEl();
+    if (!feedback) return;
     feedback.textContent = isCorrect ? "Correct" : "Wrong";
     feedback.style.color = isCorrect ? "green" : "red";
     feedback.style.display = "block";
@@ -247,7 +266,7 @@
       if (allAnswered) {
         isEnd = true;
         el("problemDisplay").textContent = "";
-        el("remainingDisplay").textContent = "0";
+        setRemainingDisplay(0);
         screenLock();
         const best = writeBestIfBetter(ticks);
         displayBestRecord(best);
@@ -292,8 +311,7 @@
   }
 
   function updateTimer() {
-    const td = el("timer-display");
-    if (td) td.textContent = formatTimerDisplay(ticks);
+    setTimerDisplay(ticks);
   }
 
   function startTimer() {
@@ -374,9 +392,8 @@
     problems.length = 0;
     el("answerInput").value = "";
     el("problemDisplay").textContent = "";
-    el("remainingDisplay").textContent = String(problemCount);
-    const td = el("timer-display");
-    if (td) td.textContent = "00:00:00";
+    setRemainingDisplay(problemCount);
+    setTimerDisplay(0);
     renderGuide();
     const lock = document.getElementById("screenLock");
     if (lock) lock.remove();
@@ -473,6 +490,11 @@
     if (el("nokori") && def.remnantLabel) {
       el("nokori").textContent = def.remnantLabel;
     }
+    if (el("calc-nokori")) {
+      el("calc-nokori").textContent = "残り";
+    }
+    setRemainingDisplay(problemCount);
+    setTimerDisplay(0);
 
     if (isImagetore) {
       syncCanvasSize();
@@ -484,8 +506,8 @@
       }
       window.addEventListener("resize", () => syncCanvasSize());
     } else {
-      const canvasHost = document.getElementById("canvas-container");
-      if (canvasHost) canvasHost.hidden = true;
+      const leftContainer = document.getElementById("left-container");
+      if (leftContainer) leftContainer.hidden = true;
     }
 
     displayBestRecord(readBest());
