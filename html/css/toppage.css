@@ -86,11 +86,13 @@ body {
   box-sizing: border-box;
 }
 
-.challenge-button {
+a.challenge-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   min-width: min(86vw, 420px);
+  width: min(86vw, 420px);
   min-height: clamp(88px, 18vmin, 128px);
   padding: 22px 36px;
   border-radius: 32px;
@@ -101,7 +103,7 @@ body {
     rgba(255, 236, 197, 0.96)
   );
   color: var(--accent-deep);
-  font-family: inherit;
+  font-family: "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif;
   font-size: clamp(28px, 6.4vmin, 44px);
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -109,13 +111,14 @@ body {
   text-align: center;
   line-height: 1.2;
   box-shadow: var(--shadow-lg);
+  -webkit-tap-highlight-color: transparent;
   transition:
     transform 0.14s ease,
     box-shadow 0.14s ease,
     background 0.14s ease;
 }
 
-.challenge-button:hover {
+a.challenge-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 18px 34px rgba(109, 78, 25, 0.16);
   background: linear-gradient(
@@ -123,10 +126,19 @@ body {
     rgba(255, 255, 255, 1),
     rgba(255, 228, 170, 0.98)
   );
+  color: var(--accent-deep);
+  text-decoration: none;
 }
 
-.challenge-button:active {
+a.challenge-button:active {
   transform: translateY(1px);
+  color: var(--accent-deep);
+  text-decoration: none;
+}
+
+a.challenge-button:visited {
+  color: var(--accent-deep);
+  text-decoration: none;
 }
 
 #menu-container {
@@ -136,6 +148,11 @@ body {
   gap: clamp(20px, 3vmin, 28px);
   box-sizing: border-box;
   padding: 8px 0 20px;
+}
+
+/* display:flex が hidden 属性の UA スタイルを上書きしないようにする */
+#menu-container[hidden] {
+  display: none !important;
 }
 
 .menu-section {
@@ -233,8 +250,9 @@ body {
     padding: 8px 0 20px;
   }
 
-  .challenge-button {
+  a.challenge-button {
     min-width: min(90vw, 360px);
+    width: min(90vw, 360px);
     min-height: clamp(80px, 20vmin, 112px);
     padding: 18px 24px;
     border-radius: 28px;
