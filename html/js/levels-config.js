@@ -1,5 +1,17 @@
 (function () {
   const PROBLEM_COUNT_IMAGETORE = 10;
+  const PROBLEM_COUNT_TODAY = 80;
+
+  const SPECIAL_MULTIPLICATIONS = [
+    { a: 11, b: 11 },
+    { a: 12, b: 12 },
+    { a: 13, b: 13 },
+    { a: 25, b: 4 },
+    { a: 25, b: 8 },
+    { a: 50, b: 2 },
+    { a: 50, b: 4 },
+    { a: 75, b: 2 },
+  ];
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -42,7 +54,92 @@
     };
   }
 
+  function createKukuProblems() {
+    const pool = [];
+    for (let a = 2; a <= 9; a++) {
+      for (let b = 2; b <= 9; b++) {
+        pool.push({
+          question: `${a} × ${b}`,
+          answer: a * b,
+        });
+      }
+    }
+    return shuffle(pool);
+  }
+
+  function createSpecialMultiplicationProblems(count) {
+    const pool = SPECIAL_MULTIPLICATIONS.map(({ a, b }) => ({
+      question: `${a} × ${b}`,
+      answer: a * b,
+    }));
+    shuffle(pool);
+    return pool.slice(0, count);
+  }
+
+  function createTwoDigitAddition(withCarry) {
+    let a;
+    let b;
+    do {
+      a = randomInt(10, 99);
+      b = randomInt(10, 99);
+      const onesCarry = (a % 10) + (b % 10) >= 10;
+      if (withCarry === onesCarry) break;
+    } while (true);
+    return {
+      question: `${a} + ${b}`,
+      answer: a + b,
+    };
+  }
+
+  function createTwoDigitSubtraction(withBorrow) {
+    let a;
+    let b;
+    do {
+      a = randomInt(10, 99);
+      b = randomInt(10, 99);
+      if (a < b) continue;
+      const onesBorrow = a % 10 < b % 10;
+      if (withBorrow === onesBorrow) break;
+    } while (true);
+    return {
+      question: `${a} − ${b}`,
+      answer: a - b,
+    };
+  }
+
+  function createTwoDigitAddSubProblems() {
+    const problems = [
+      createTwoDigitAddition(true),
+      createTwoDigitAddition(true),
+      createTwoDigitAddition(true),
+      createTwoDigitAddition(true),
+      createTwoDigitAddition(false),
+      createTwoDigitSubtraction(true),
+      createTwoDigitSubtraction(true),
+      createTwoDigitSubtraction(true),
+      createTwoDigitSubtraction(true),
+      createTwoDigitSubtraction(false),
+    ];
+    return shuffle(problems);
+  }
+
+  function createTodayChallengeProblems(problems) {
+    const kuku = createKukuProblems();
+    const special = createSpecialMultiplicationProblems(6);
+    const addSub = createTwoDigitAddSubProblems();
+    problems.push(...kuku, ...special, ...addSub);
+  }
+
   window.GAME_MODES = {
+    today: {
+      label: "今日のチャレンジ",
+      summary: "九九・特殊な掛け算・2桁の加減 80問",
+      type: "master",
+      storageKey: "bestRecordTodayChallenge",
+      problemCount: PROBLEM_COUNT_TODAY,
+      remnantLabel: "Rem.",
+      createProblems: createTodayChallengeProblems,
+    },
     imagetore: {
       label: "イメトレ",
       summary: "マス目を塗って答える",
