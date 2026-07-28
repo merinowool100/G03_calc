@@ -3,8 +3,8 @@
   const GRID_COUNT = 10;
 
   const params = new URLSearchParams(window.location.search);
-  const modeId = params.get("mode") || "imagetore";
-  const def = GAME_MODES[modeId] || GAME_MODES.imagetore;
+  const modeId = params.get("mode") || "today";
+  const def = GAME_MODES[modeId] || GAME_MODES.today;
   const isImagetore = def.type === "imagetore";
 
   const problems = [];
