@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/style.css" />
     <title>Calc</title>
+    <script>
+      (function () {
+        var mode = new URLSearchParams(location.search).get("mode") || "today";
+        var playMode = mode === "imagetore" ? "imagetore" : "master";
+        document.documentElement.dataset.playMode = playMode;
+        document.documentElement.dataset.modeId = mode;
+      })();
+    </script>
   </head>
 
   <body>

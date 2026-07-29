@@ -24,6 +24,11 @@ html {
   height: 100%;
 }
 
+/* モード確定前のレイアウトフラッシュを防ぐ */
+html:not([data-play-mode]) body {
+  visibility: hidden;
+}
+
 body {
   font-family: "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif;
   min-height: 100dvh;
