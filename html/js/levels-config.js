@@ -58,10 +58,21 @@
     const pool = [];
     for (let a = 2; a <= 9; a++) {
       for (let b = 2; b <= 9; b++) {
-        pool.push({
-          question: `${a} × ${b}`,
-          answer: a * b,
-        });
+        const product = a * b;
+        // 穴埋め位置をランダムに（例: 3 × □ = 12 / □ × 4 = 12）
+        if (Math.random() < 0.5) {
+          pool.push({
+            question: `${a} × □ = ${product}`,
+            answer: b,
+            blankFormat: true,
+          });
+        } else {
+          pool.push({
+            question: `□ × ${b} = ${product}`,
+            answer: a,
+            blankFormat: true,
+          });
+        }
       }
     }
     return shuffle(pool);
@@ -133,7 +144,7 @@
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
-      summary: "九九・特殊な掛け算・2桁の加減 80問",
+      summary: "九九穴埋め・特殊な掛け算・2桁の加減 80問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,

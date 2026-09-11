@@ -284,8 +284,11 @@
   function showProblem() {
     if (problems.length === 0 || currentProblemIndex >= problems.length) return;
     const currentProblem = problems[currentProblemIndex];
-    const suffix = isImagetore ? "" : " =";
-    el("problemDisplay").textContent = `${currentProblem.question}${suffix}`;
+    let displayText = currentProblem.question;
+    if (!isImagetore && !currentProblem.blankFormat) {
+      displayText = `${currentProblem.question} =`;
+    }
+    el("problemDisplay").textContent = displayText;
     setRemainingDisplay(problems.length - currentProblemIndex);
     if (isImagetore) {
       clearPaintedCells();
