@@ -4,7 +4,6 @@
   const PROBLEM_COUNT_TODAY = 90;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
-  const FOUR_PLACE_GIVEN_COUNT = 8;
 
   const SPECIAL_MULTIPLICATIONS = [
     { a: 11, b: 11 },
@@ -15,6 +14,138 @@
     { a: 50, b: 2 },
     { a: 50, b: 4 },
     { a: 75, b: 2 },
+  ];
+
+  // 添付写真の空きマス・赤マス配置（数字は毎回ランダム）
+  const FOUR_PLACE_LAYOUTS = [
+    {
+      givens: [
+        [0, 1],
+        [0, 2],
+        [1, 0],
+        [1, 3],
+        [2, 1],
+        [2, 3],
+        [3, 1],
+        [3, 2],
+      ],
+      reds: [
+        [0, 0],
+        [2, 2],
+      ],
+    },
+    {
+      givens: [
+        [0, 0],
+        [0, 2],
+        [1, 1],
+        [1, 3],
+        [2, 1],
+        [2, 3],
+        [3, 0],
+        [3, 2],
+      ],
+      reds: [
+        [0, 3],
+        [2, 0],
+      ],
+    },
+    {
+      givens: [
+        [0, 0],
+        [0, 2],
+        [1, 1],
+        [1, 3],
+        [2, 0],
+        [2, 3],
+        [3, 0],
+        [3, 1],
+      ],
+      reds: [
+        [1, 0],
+        [3, 3],
+      ],
+    },
+    {
+      givens: [
+        [0, 0],
+        [0, 3],
+        [1, 1],
+        [1, 2],
+        [2, 0],
+        [2, 2],
+        [3, 0],
+        [3, 3],
+      ],
+      reds: [
+        [1, 3],
+        [2, 1],
+      ],
+    },
+    {
+      givens: [
+        [0, 1],
+        [0, 2],
+        [1, 0],
+        [1, 3],
+        [2, 0],
+        [2, 3],
+        [3, 1],
+        [3, 2],
+      ],
+      reds: [
+        [0, 0],
+        [3, 3],
+      ],
+    },
+    {
+      givens: [
+        [0, 0],
+        [0, 1],
+        [1, 2],
+        [1, 3],
+        [2, 1],
+        [2, 2],
+        [3, 0],
+        [3, 3],
+      ],
+      reds: [
+        [0, 2],
+        [2, 0],
+      ],
+    },
+    {
+      givens: [
+        [0, 1],
+        [0, 2],
+        [1, 0],
+        [1, 3],
+        [2, 0],
+        [2, 3],
+        [3, 1],
+        [3, 2],
+      ],
+      reds: [
+        [0, 0],
+        [3, 3],
+      ],
+    },
+    {
+      givens: [
+        [0, 0],
+        [0, 2],
+        [0, 3],
+        [1, 1],
+        [2, 2],
+        [3, 0],
+        [3, 1],
+        [3, 3],
+      ],
+      reds: [
+        [1, 3],
+        [2, 0],
+      ],
+    },
   ];
 
   function randomInt(min, max) {
@@ -83,6 +214,10 @@
     return grid;
   }
 
+  function remapFourPlaceDigits(grid, digitMap) {
+    return grid.map((row) => row.map((value) => (value ? digitMap[value] : 0)));
+  }
+
   function countFourPlaceSolutions(grid, limit) {
     let count = 0;
     function dfs() {
@@ -105,78 +240,67 @@
     return count;
   }
 
-  function digFourPlacePuzzle(solution, givenCount) {
-    const puzzle = cloneGrid(solution);
-    const positions = shuffle(
-      Array.from({ length: FOUR_PLACE_SIZE * FOUR_PLACE_SIZE }, (_, i) => [
-        Math.floor(i / FOUR_PLACE_SIZE),
-        i % FOUR_PLACE_SIZE,
-      ]),
-    );
-    let remaining = FOUR_PLACE_SIZE * FOUR_PLACE_SIZE;
-    for (let i = 0; i < positions.length && remaining > givenCount; i++) {
-      const [row, col] = positions[i];
-      const backup = puzzle[row][col];
-      puzzle[row][col] = 0;
-      const probe = cloneGrid(puzzle);
-      if (countFourPlaceSolutions(probe, 2) !== 1) {
-        puzzle[row][col] = backup;
-      } else {
-        remaining--;
-      }
+  function applyFourPlaceLayout(solution, layout) {
+    const grid = emptyFourPlaceGrid();
+    for (let i = 0; i < layout.givens.length; i++) {
+      const [row, col] = layout.givens[i];
+      grid[row][col] = solution[row][col];
     }
-    return puzzle;
+    return grid;
   }
 
-  function pickTwoRedCells(puzzle, solution) {
-    const empties = [];
+  function givenDigitsMissAtLeastOne(grid) {
+    const seen = new Set();
     for (let row = 0; row < FOUR_PLACE_SIZE; row++) {
       for (let col = 0; col < FOUR_PLACE_SIZE; col++) {
-        if (puzzle[row][col] === 0) empties.push([row, col]);
+        const value = grid[row][col];
+        if (value) seen.add(value);
       }
     }
-    shuffle(empties);
-    if (empties.length < 2) return null;
-    const reds = [empties[0], empties[1]];
-    const answer =
-      solution[reds[0][0]][reds[0][1]] + solution[reds[1][0]][reds[1][1]];
-    return { reds, answer };
+    return seen.size > 0 && seen.size < FOUR_PLACE_SIZE;
   }
 
-  function createRandomFourPlacePuzzle() {
-    for (let attempt = 0; attempt < 40; attempt++) {
-      const solution = createSolvedFourPlaceGrid();
-      const grid = digFourPlacePuzzle(solution, FOUR_PLACE_GIVEN_COUNT);
-      const redInfo = pickTwoRedCells(grid, solution);
-      if (!redInfo) continue;
+  function createFourPlacePuzzleFromLayout(layout) {
+    for (let attempt = 0; attempt < 80; attempt++) {
+      const baseSolution = createSolvedFourPlaceGrid();
+      const digitOrder = shuffle([1, 2, 3, 4]);
+      const digitMap = {
+        1: digitOrder[0],
+        2: digitOrder[1],
+        3: digitOrder[2],
+        4: digitOrder[3],
+      };
+      const solution = remapFourPlaceDigits(baseSolution, digitMap);
+      const grid = applyFourPlaceLayout(solution, layout);
+      if (!givenDigitsMissAtLeastOne(grid)) continue;
       const probe = cloneGrid(grid);
       if (countFourPlaceSolutions(probe, 2) !== 1) continue;
-      return {
-        grid,
-        reds: redInfo.reds,
-        answer: redInfo.answer,
-      };
+      const reds = layout.reds.map((cell) => cell.slice());
+      const answer =
+        solution[reds[0][0]][reds[0][1]] + solution[reds[1][0]][reds[1][1]];
+      return { grid, reds, answer };
     }
-    // 万一失敗したら、解盤面から最低限の穴あきを作る
+
+    // フォールバック: 配置は維持し、数字欠け条件だけ緩和
     const solution = createSolvedFourPlaceGrid();
-    const grid = cloneGrid(solution);
-    const reds = [
-      [0, 0],
-      [3, 3],
-    ];
-    grid[0][0] = 0;
-    grid[3][3] = 0;
+    const grid = applyFourPlaceLayout(solution, layout);
+    const reds = layout.reds.map((cell) => cell.slice());
     return {
       grid,
       reds,
-      answer: solution[0][0] + solution[3][3],
+      answer:
+        solution[reds[0][0]][reds[0][1]] + solution[reds[1][0]][reds[1][1]],
     };
   }
 
   function createFourPlaceProblems() {
+    const layouts = shuffle(FOUR_PLACE_LAYOUTS.map((layout) => ({
+      givens: layout.givens.map((cell) => cell.slice()),
+      reds: layout.reds.map((cell) => cell.slice()),
+    })));
     const problems = [];
     for (let i = 0; i < PROBLEM_COUNT_FOUR_PLACE; i++) {
-      const puzzle = createRandomFourPlacePuzzle();
+      const puzzle = createFourPlacePuzzleFromLayout(layouts[i]);
       problems.push({
         type: "fourPlace",
         question: `フォープレイス ${i + 1}`,
