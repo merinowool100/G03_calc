@@ -1,6 +1,7 @@
 (function () {
   const PROBLEM_COUNT_IMAGETORE = 10;
-  const PROBLEM_COUNT_TODAY = 80;
+  const PROBLEM_COUNT_FOUR_PLACE = 8;
+  const PROBLEM_COUNT_TODAY = 88;
 
   const SPECIAL_MULTIPLICATIONS = [
     { a: 11, b: 11 },
@@ -11,6 +12,114 @@
     { a: 50, b: 2 },
     { a: 50, b: 4 },
     { a: 75, b: 2 },
+  ];
+
+  // 添付画像のフォープレイス8問（0=空、redsは赤マス座標 [row,col]）
+  const FOUR_PLACE_PUZZLES = [
+    {
+      grid: [
+        [0, 1, 4, 0],
+        [2, 0, 0, 1],
+        [0, 3, 0, 4],
+        [0, 2, 1, 0],
+      ],
+      reds: [
+        [0, 0],
+        [2, 2],
+      ],
+      answer: 5,
+    },
+    {
+      grid: [
+        [1, 0, 2, 0],
+        [0, 3, 0, 1],
+        [0, 1, 0, 2],
+        [3, 0, 1, 0],
+      ],
+      reds: [
+        [0, 3],
+        [2, 0],
+      ],
+      answer: 7,
+    },
+    {
+      grid: [
+        [4, 0, 1, 0],
+        [0, 3, 0, 2],
+        [2, 0, 0, 1],
+        [3, 1, 0, 0],
+      ],
+      reds: [
+        [1, 0],
+        [3, 3],
+      ],
+      answer: 5,
+    },
+    {
+      grid: [
+        [2, 0, 0, 4],
+        [0, 4, 3, 0],
+        [3, 0, 4, 0],
+        [4, 0, 0, 3],
+      ],
+      reds: [
+        [1, 3],
+        [2, 1],
+      ],
+      answer: 4,
+    },
+    {
+      grid: [
+        [0, 1, 3, 0],
+        [3, 0, 0, 4],
+        [1, 0, 0, 3],
+        [0, 3, 4, 0],
+      ],
+      reds: [
+        [0, 0],
+        [3, 3],
+      ],
+      answer: 5,
+    },
+    {
+      grid: [
+        [2, 3, 0, 0],
+        [0, 0, 3, 2],
+        [0, 2, 4, 0],
+        [1, 0, 0, 3],
+      ],
+      reds: [
+        [0, 2],
+        [2, 0],
+      ],
+      answer: 4,
+    },
+    {
+      grid: [
+        [0, 3, 1, 0],
+        [2, 0, 0, 4],
+        [1, 0, 0, 3],
+        [0, 2, 4, 0],
+      ],
+      reds: [
+        [0, 0],
+        [3, 3],
+      ],
+      answer: 5,
+    },
+    {
+      grid: [
+        [4, 0, 2, 3],
+        [0, 2, 0, 0],
+        [0, 0, 4, 0],
+        [1, 4, 0, 2],
+      ],
+      reds: [
+        [1, 3],
+        [2, 0],
+      ],
+      answer: 6,
+    },
   ];
 
   function randomInt(min, max) {
@@ -134,17 +243,29 @@
     return shuffle(problems);
   }
 
+  function createFourPlaceProblems() {
+    return FOUR_PLACE_PUZZLES.map((puzzle, index) => ({
+      type: "fourPlace",
+      question: `フォープレイス ${index + 1}`,
+      blankFormat: true,
+      grid: puzzle.grid.map((row) => row.slice()),
+      reds: puzzle.reds.map((cell) => cell.slice()),
+      answer: puzzle.answer,
+    }));
+  }
+
   function createTodayChallengeProblems(problems) {
+    const fourPlace = createFourPlaceProblems();
     const kuku = createKukuProblems();
     const special = createSpecialMultiplicationProblems(6);
     const addSub = createTwoDigitAddSubProblems();
-    problems.push(...kuku, ...special, ...addSub);
+    problems.push(...fourPlace, ...kuku, ...special, ...addSub);
   }
 
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
-      summary: "九九穴埋め・特殊な掛け算・2桁の加減 80問",
+      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 88問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,

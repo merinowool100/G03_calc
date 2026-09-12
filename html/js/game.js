@@ -281,14 +281,71 @@
     return (height === a && width === b) || (height === b && width === a);
   }
 
+  function isFourPlaceProblem(problem) {
+    return Boolean(problem && problem.type === "fourPlace");
+  }
+
+  function clearFourPlaceBoard() {
+    const board = el("fourPlaceBoard");
+    const container = el("problemDisplayContainer");
+    if (board) {
+      board.innerHTML = "";
+      board.hidden = true;
+    }
+    if (container) container.classList.remove("is-four-place");
+    const display = el("problemDisplay");
+    if (display) display.hidden = false;
+  }
+
+  function renderFourPlaceBoard(problem) {
+    const board = el("fourPlaceBoard");
+    const container = el("problemDisplayContainer");
+    const display = el("problemDisplay");
+    if (!board || !problem || !problem.grid) return;
+
+    const redSet = new Set(
+      (problem.reds || []).map(([row, col]) => `${row},${col}`),
+    );
+    board.innerHTML = "";
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col < 4; col++) {
+        const cell = document.createElement("div");
+        cell.className = "four-place-cell";
+        if (row === 1) cell.classList.add("is-block-bottom");
+        if (col === 1) cell.classList.add("is-block-right");
+        if (redSet.has(`${row},${col}`)) {
+          cell.classList.add("is-red");
+        } else {
+          const value = problem.grid[row][col];
+          if (value) cell.textContent = String(value);
+        }
+        board.appendChild(cell);
+      }
+    }
+
+    board.hidden = false;
+    if (display) {
+      display.textContent = "";
+      display.hidden = true;
+    }
+    if (container) container.classList.add("is-four-place");
+  }
+
   function showProblem() {
     if (problems.length === 0 || currentProblemIndex >= problems.length) return;
     const currentProblem = problems[currentProblemIndex];
-    let displayText = currentProblem.question;
-    if (!isImagetore && !currentProblem.blankFormat) {
-      displayText = `${currentProblem.question} =`;
+    clearFourPlaceBoard();
+
+    if (isFourPlaceProblem(currentProblem)) {
+      renderFourPlaceBoard(currentProblem);
+    } else {
+      let displayText = currentProblem.question;
+      if (!isImagetore && !currentProblem.blankFormat) {
+        displayText = `${currentProblem.question} =`;
+      }
+      el("problemDisplay").textContent = displayText;
     }
-    el("problemDisplay").textContent = displayText;
+
     setRemainingDisplay(problems.length - currentProblemIndex);
     if (isImagetore) {
       clearPaintedCells();
@@ -334,6 +391,7 @@
       const allAnswered = isCorrect && currentProblemIndex >= problems.length;
       if (allAnswered) {
         isEnd = true;
+        clearFourPlaceBoard();
         el("problemDisplay").textContent = "";
         setRemainingDisplay(0);
         screenLock();
@@ -460,6 +518,7 @@
     currentProblemIndex = 0;
     problems.length = 0;
     el("answerInput").value = "";
+    clearFourPlaceBoard();
     el("problemDisplay").textContent = "";
     setRemainingDisplay(problemCount);
     setTimerDisplay(0);
