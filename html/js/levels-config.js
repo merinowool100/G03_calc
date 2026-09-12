@@ -1,7 +1,7 @@
 (function () {
   const PROBLEM_COUNT_IMAGETORE = 10;
   const PROBLEM_COUNT_FOUR_PLACE = 8;
-  const PROBLEM_COUNT_TODAY = 88;
+  const PROBLEM_COUNT_TODAY = 90;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
   const FOUR_PLACE_GIVEN_COUNT = 8;
@@ -242,13 +242,12 @@
     return shuffle(pool);
   }
 
-  function createSpecialMultiplicationProblems(count) {
+  function createSpecialMultiplicationProblems() {
     const pool = SPECIAL_MULTIPLICATIONS.map(({ a, b }) => ({
       question: `${a} × ${b}`,
       answer: a * b,
     }));
-    shuffle(pool);
-    return pool.slice(0, count);
+    return shuffle(pool);
   }
 
   function createTwoDigitAddition(withCarry) {
@@ -301,7 +300,7 @@
   function createTodayChallengeProblems(problems) {
     const fourPlace = createFourPlaceProblems();
     const kuku = createKukuProblems();
-    const special = createSpecialMultiplicationProblems(6);
+    const special = createSpecialMultiplicationProblems();
     const addSub = createTwoDigitAddSubProblems();
     problems.push(...fourPlace, ...kuku, ...special, ...addSub);
   }
@@ -309,7 +308,7 @@
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
-      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 88問",
+      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 90問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
