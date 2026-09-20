@@ -291,6 +291,7 @@
     if (board) {
       board.innerHTML = "";
       board.hidden = true;
+      board.setAttribute("aria-hidden", "true");
     }
     if (container) container.classList.remove("is-four-place");
     const display = el("problemDisplay");
@@ -324,6 +325,7 @@
     }
 
     board.hidden = false;
+    board.setAttribute("aria-hidden", "false");
     if (display) {
       display.textContent = "";
       display.hidden = true;
@@ -616,6 +618,7 @@
     }
     setRemainingDisplay(problemCount);
     setTimerDisplay(0);
+    clearFourPlaceBoard();
 
     if (isImagetore) {
       syncCanvasSize();
