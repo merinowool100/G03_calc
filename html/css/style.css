@@ -389,16 +389,18 @@ html[data-play-mode="imagetore"] .canvas {
   padding: 16px;
 }
 
-#problemDisplayContainer.is-four-place #fourPlaceBoard {
-  grid-area: board;
-}
-
 #problemDisplayContainer.is-four-place #answerArea {
   grid-area: answer;
 }
 
-#fourPlaceBoard {
-  display: grid;
+#fourPlaceBoard,
+#fourPlaceBoard[hidden] {
+  display: none !important;
+}
+
+#problemDisplayContainer.is-four-place #fourPlaceBoard:not([hidden]) {
+  display: grid !important;
+  grid-area: board;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(4, minmax(0, 1fr));
   width: min(52vmin, 280px);
@@ -778,7 +780,7 @@ html[data-play-mode="imagetore"] #feedback-calc {
     justify-items: center;
   }
 
-  #fourPlaceBoard {
+  #problemDisplayContainer.is-four-place #fourPlaceBoard:not([hidden]) {
     width: min(72vw, 300px);
     height: min(72vw, 300px);
   }
