@@ -669,11 +669,34 @@ html[data-play-mode="imagetore"] #feedback-calc {
 }
 
 @media screen and (max-width: 768px) {
+  html[data-play-mode="master"],
+  html[data-play-mode="master"] body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  html[data-play-mode="master"] body {
+    min-height: 100dvh;
+    height: 100dvh;
+  }
+
   #wrap {
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    padding-top: max(4px, env(safe-area-inset-top));
+    padding-bottom: max(4px, env(safe-area-inset-bottom));
     padding-left: max(8px, env(safe-area-inset-left));
     padding-right: max(8px, env(safe-area-inset-right));
+  }
+
+  html[data-play-mode="master"] #wrap {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    align-items: stretch;
+    justify-content: stretch;
   }
 
   #left-container {
@@ -694,6 +717,7 @@ html[data-play-mode="imagetore"] #feedback-calc {
   #container2 {
     flex: 1 1 auto;
     min-height: 0;
+    height: 100%;
     justify-content: flex-start;
   }
 
@@ -752,42 +776,60 @@ html[data-play-mode="imagetore"] #feedback-calc {
   #container2-sub {
     flex: 1 1 auto;
     min-height: 0;
-    padding: 14px;
-    gap: 10px;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  html[data-play-mode="master"] #right-container {
+    flex: 1 1 auto;
+    max-width: 100%;
+    height: 100%;
   }
 
   html[data-play-mode="master"] #container2-sub {
-    min-height: auto;
+    min-height: 0;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
   }
 
   #calc-status-bar {
-    padding: 10px 12px;
+    padding: 8px 10px;
+    gap: 10px;
+    flex: 0 0 auto;
   }
 
   #problemDisplayContainer {
-    min-height: 230px;
-    padding: 20px 14px;
+    min-height: 0;
+    flex: 0 1 auto;
+    padding: 10px 12px;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 8px;
   }
 
   #problemDisplayContainer.is-four-place {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "board"
-      "answer";
+    grid-template-columns: auto auto;
+    grid-template-areas: "board answer";
     min-height: 0;
     justify-items: center;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 10px;
   }
 
   #problemDisplayContainer.is-four-place #fourPlaceBoard:not([hidden]) {
-    width: min(72vw, 300px);
-    height: min(72vw, 300px);
+    width: min(38vw, 150px);
+    height: min(38vw, 150px);
+  }
+
+  #problemDisplayContainer.is-four-place .four-place-cell {
+    font-size: clamp(16px, 4.2vw, 24px);
   }
 
   #problemDisplay {
     text-align: center;
-    font-size: clamp(34px, 9.2vw, 54px);
+    font-size: clamp(28px, 7.2vw, 44px);
   }
 
   #answerArea {
@@ -795,19 +837,47 @@ html[data-play-mode="imagetore"] #feedback-calc {
   }
 
   #answerInput {
-    width: min(140px, 42vw);
+    width: min(112px, 30vw);
+    height: clamp(44px, 10vw, 58px);
+    font-size: clamp(22px, 5vw, 30px);
   }
 
   #numberButtons {
-    gap: 12px;
-    grid-template-rows: repeat(5, minmax(52px, 1fr));
+    gap: 6px;
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-template-rows: repeat(5, minmax(0, 1fr));
   }
 
   #numberButtons button {
     min-height: 0;
     height: 100%;
-    font-size: clamp(22px, 5.2vw, 28px);
-    border-radius: 18px;
+    font-size: clamp(18px, 4.4vw, 24px);
+    border-radius: 14px;
+  }
+
+  html[data-play-mode="master"] #feedback-calc {
+    font-size: clamp(88px, 22vmin, 160px);
+  }
+}
+
+@media screen and (max-width: 768px) and (max-height: 700px) {
+  #problemDisplayContainer.is-four-place #fourPlaceBoard:not([hidden]) {
+    width: min(32vw, 120px);
+    height: min(32vw, 120px);
+  }
+
+  #calc-status-bar {
+    padding: 6px 8px;
+  }
+
+  #container2-sub {
+    padding: 6px;
+    gap: 4px;
+  }
+
+  #numberButtons {
+    gap: 4px;
   }
 }
 
