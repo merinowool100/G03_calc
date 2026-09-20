@@ -618,6 +618,7 @@
     }
     setRemainingDisplay(problemCount);
     setTimerDisplay(0);
+    clearFourPlaceBoard();
 
     if (isImagetore) {
       syncCanvasSize();
