@@ -109,10 +109,20 @@ body {
   }
 }
 
+.challenge-button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 2.4vmin, 18px);
+  width: 100%;
+}
+
 a.challenge-button {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   box-sizing: border-box;
   width: auto;
   max-width: min(92vw, 520px);
@@ -138,6 +148,16 @@ a.challenge-button {
     background 0.14s ease;
 }
 
+a.challenge-button--secondary {
+  min-height: clamp(64px, 12vmin, 84px);
+  padding: 14px clamp(24px, 5vw, 40px);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 245, 0.96),
+    rgba(255, 226, 186, 0.92)
+  );
+}
+
 .challenge-button__label {
   display: block;
   white-space: nowrap;
@@ -145,6 +165,19 @@ a.challenge-button {
   font-weight: 800;
   letter-spacing: 0.06em;
   line-height: 1.15;
+}
+
+a.challenge-button--secondary .challenge-button__label {
+  font-size: clamp(20px, 4.6vmin, 30px);
+}
+
+.challenge-button__summary {
+  display: block;
+  font-size: clamp(12px, 2.6vmin, 15px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  line-height: 1.2;
 }
 
 a.challenge-button:hover {
