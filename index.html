@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
     />
     <link rel="stylesheet" href="./html/css/reset.css" />
-    <link rel="stylesheet" href="./html/css/toppage.css?v=math-dragon-1" />
+    <link rel="stylesheet" href="./html/css/toppage.css?v=fourplace-set-1" />
     <title>Math Dragon</title>
   </head>
 
@@ -23,9 +23,18 @@
             width="512"
             height="512"
           />
-          <a class="challenge-button" href="./html/play.html?mode=today">
-            <span class="challenge-button__label">今日のチャレンジ</span>
-          </a>
+          <div class="challenge-button-group">
+            <a class="challenge-button" href="./html/play.html?mode=today">
+              <span class="challenge-button__label">今日のチャレンジ</span>
+            </a>
+            <a
+              class="challenge-button challenge-button--secondary"
+              href="./html/play.html?mode=fourplace"
+            >
+              <span class="challenge-button__label">フォープレイス</span>
+              <span class="challenge-button__summary">10問</span>
+            </a>
+          </div>
         </div>
         <!-- 既存メニューはコード保持のため非表示 -->
         <div

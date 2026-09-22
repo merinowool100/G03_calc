@@ -1,6 +1,7 @@
 (function () {
   const PROBLEM_COUNT_IMAGETORE = 10;
   const PROBLEM_COUNT_FOUR_PLACE = 8;
+  const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
   const PROBLEM_COUNT_TODAY = 90;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
@@ -293,13 +294,24 @@
     };
   }
 
-  function createFourPlaceProblems() {
-    const layouts = shuffle(FOUR_PLACE_LAYOUTS.map((layout) => ({
+  function cloneFourPlaceLayout(layout) {
+    return {
       givens: layout.givens.map((cell) => cell.slice()),
       reds: layout.reds.map((cell) => cell.slice()),
-    })));
+    };
+  }
+
+  function createFourPlaceProblems(count) {
+    const targetCount = count || PROBLEM_COUNT_FOUR_PLACE;
+    const source = FOUR_PLACE_LAYOUTS.map(cloneFourPlaceLayout);
+    const layouts = [];
+    while (layouts.length < targetCount) {
+      layouts.push(...shuffle(source.map(cloneFourPlaceLayout)));
+    }
+    layouts.length = targetCount;
+
     const problems = [];
-    for (let i = 0; i < PROBLEM_COUNT_FOUR_PLACE; i++) {
+    for (let i = 0; i < targetCount; i++) {
       const puzzle = createFourPlacePuzzleFromLayout(layouts[i]);
       problems.push({
         type: "fourPlace",
@@ -311,6 +323,10 @@
       });
     }
     return problems;
+  }
+
+  function createFourPlaceOnlyProblems(problems) {
+    problems.push(...createFourPlaceProblems(PROBLEM_COUNT_FOUR_PLACE_ONLY));
   }
 
   function createImagetoreProblems(problems) {
@@ -422,7 +438,7 @@
   }
 
   function createTodayChallengeProblems(problems) {
-    const fourPlace = createFourPlaceProblems();
+    const fourPlace = createFourPlaceProblems(PROBLEM_COUNT_FOUR_PLACE);
     const kuku = createKukuProblems();
     const special = createSpecialMultiplicationProblems();
     const addSub = createTwoDigitAddSubProblems();
@@ -438,6 +454,15 @@
       problemCount: PROBLEM_COUNT_TODAY,
       remnantLabel: "Rem.",
       createProblems: createTodayChallengeProblems,
+    },
+    fourplace: {
+      label: "フォープレイス",
+      summary: "フォープレイス 10問",
+      type: "master",
+      storageKey: "bestRecordFourPlaceOnly",
+      problemCount: PROBLEM_COUNT_FOUR_PLACE_ONLY,
+      remnantLabel: "Rem.",
+      createProblems: createFourPlaceOnlyProblems,
     },
     imagetore: {
       label: "イメトレ",
