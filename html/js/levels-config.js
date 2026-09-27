@@ -2,7 +2,8 @@
   const PROBLEM_COUNT_IMAGETORE = 10;
   const PROBLEM_COUNT_FOUR_PLACE = 8;
   const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
-  const PROBLEM_COUNT_TODAY = 90;
+  const PROBLEM_COUNT_KUKU = 40;
+  const PROBLEM_COUNT_TODAY = 66;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
 
@@ -359,27 +360,29 @@
   }
 
   function createKukuProblems() {
-    const pool = [];
-    for (let a = 2; a <= 9; a++) {
-      for (let b = 2; b <= 9; b++) {
-        const product = a * b;
-        // 穴埋め位置をランダムに（例: 3 × □ = 12 / □ × 4 = 12）
+    const problems = [];
+    // 2〜9の各段から5問。例: 18 = 2 × □ / 63 = □ × 9
+    for (let table = 2; table <= 9; table++) {
+      const others = shuffle([2, 3, 4, 5, 6, 7, 8, 9]).slice(0, 5);
+      for (let i = 0; i < others.length; i++) {
+        const other = others[i];
+        const product = table * other;
         if (Math.random() < 0.5) {
-          pool.push({
-            question: `${a} × □ = ${product}`,
-            answer: b,
+          problems.push({
+            question: `${product} = ${table} × □`,
+            answer: other,
             blankFormat: true,
           });
         } else {
-          pool.push({
-            question: `□ × ${b} = ${product}`,
-            answer: a,
+          problems.push({
+            question: `${product} = □ × ${other}`,
+            answer: table,
             blankFormat: true,
           });
         }
       }
     }
-    return shuffle(pool);
+    return shuffle(problems);
   }
 
   function createSpecialMultiplicationProblems() {
@@ -448,7 +451,7 @@
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
-      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 90問",
+      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 66問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
