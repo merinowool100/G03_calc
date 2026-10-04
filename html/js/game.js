@@ -286,17 +286,33 @@
     return Boolean(problem && problem.type === "fourPlace");
   }
 
-  function clearFourPlaceBoard() {
-    const board = el("fourPlaceBoard");
+  function isNumberStairsProblem(problem) {
+    return Boolean(problem && problem.type === "numberStairs");
+  }
+
+  function clearSpecialBoards() {
+    const fourPlaceBoard = el("fourPlaceBoard");
+    const stairsBoard = el("stairsBoard");
     const container = el("problemDisplayContainer");
-    if (board) {
-      board.innerHTML = "";
-      board.hidden = true;
-      board.setAttribute("aria-hidden", "true");
+    if (fourPlaceBoard) {
+      fourPlaceBoard.innerHTML = "";
+      fourPlaceBoard.hidden = true;
+      fourPlaceBoard.setAttribute("aria-hidden", "true");
     }
-    if (container) container.classList.remove("is-four-place");
+    if (stairsBoard) {
+      stairsBoard.innerHTML = "";
+      stairsBoard.hidden = true;
+      stairsBoard.setAttribute("aria-hidden", "true");
+    }
+    if (container) {
+      container.classList.remove("is-four-place", "is-stairs");
+    }
     const display = el("problemDisplay");
     if (display) display.hidden = false;
+  }
+
+  function clearFourPlaceBoard() {
+    clearSpecialBoards();
   }
 
   function renderFourPlaceBoard(problem) {
@@ -334,13 +350,67 @@
     if (container) container.classList.add("is-four-place");
   }
 
+  function renderStairsBoard(problem) {
+    const board = el("stairsBoard");
+    const container = el("problemDisplayContainer");
+    const display = el("problemDisplay");
+    if (!board || !problem) return;
+
+    const nodes =
+      Array.isArray(problem.nodes) && problem.nodes.length
+        ? problem.nodes
+        : [problem.start, ...Array(problem.emptyCount || 1).fill(null), problem.end];
+
+    board.innerHTML = "";
+    const row = document.createElement("div");
+    row.className = "stairs-row";
+
+    for (let i = 0; i < nodes.length; i++) {
+      if (i > 0) {
+        const connector = document.createElement("div");
+        connector.className = "stairs-connector";
+        connector.setAttribute("aria-hidden", "true");
+        row.appendChild(connector);
+      }
+      const circle = document.createElement("div");
+      circle.className = "stairs-circle";
+      const value = nodes[i];
+      if (value == null) {
+        circle.classList.add("is-empty");
+      } else {
+        circle.textContent = String(value);
+      }
+      row.appendChild(circle);
+    }
+
+    const hint = document.createElement("div");
+    hint.className = "stairs-hint";
+    const marks = Array(nodes.length - 1)
+      .fill("?")
+      .join("　　");
+    hint.textContent = marks;
+
+    board.appendChild(row);
+    board.appendChild(hint);
+
+    board.hidden = false;
+    board.setAttribute("aria-hidden", "false");
+    if (display) {
+      display.textContent = "";
+      display.hidden = true;
+    }
+    if (container) container.classList.add("is-stairs");
+  }
+
   function showProblem() {
     if (problems.length === 0 || currentProblemIndex >= problems.length) return;
     const currentProblem = problems[currentProblemIndex];
-    clearFourPlaceBoard();
+    clearSpecialBoards();
 
     if (isFourPlaceProblem(currentProblem)) {
       renderFourPlaceBoard(currentProblem);
+    } else if (isNumberStairsProblem(currentProblem)) {
+      renderStairsBoard(currentProblem);
     } else {
       let displayText = currentProblem.question;
       if (!isImagetore && !currentProblem.blankFormat) {

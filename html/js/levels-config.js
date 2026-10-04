@@ -2,11 +2,14 @@
   const PROBLEM_COUNT_IMAGETORE = 10;
   const PROBLEM_COUNT_FOUR_PLACE = 8;
   const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
+  const PROBLEM_COUNT_NUMBER_STAIRS = 10;
   const PROBLEM_COUNT_KUKU = 20;
   const PROBLEM_COUNT_TEEN_TIMES = 5;
   const PROBLEM_COUNT_TODAY = 51;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
+  const STAIRS_MAX_VALUE = 99;
+  const STAIRS_MAX_STEP = 12;
 
   const SPECIAL_MULTIPLICATIONS = [
     { a: 11, b: 11 },
@@ -462,6 +465,73 @@
     problems.push(...fourPlace, ...kuku, ...teenTimes, ...special, ...addSub);
   }
 
+  function formatStairsQuestion(start, emptyCount, end) {
+    const empties = Array(emptyCount).fill("○").join("ー");
+    return `${start}ー${empties}ー${end}`;
+  }
+
+  function createNumberStairsProblem(emptyCount) {
+    const steps = emptyCount + 1;
+    for (let attempt = 0; attempt < 80; attempt++) {
+      const step = randomInt(1, STAIRS_MAX_STEP);
+      const goingUp = Math.random() < 0.55;
+      const signedStep = goingUp ? step : -step;
+      const maxStart = goingUp
+        ? STAIRS_MAX_VALUE - step * steps
+        : STAIRS_MAX_VALUE;
+      const minStart = goingUp ? 1 : 1 + step * steps;
+      if (maxStart < minStart) continue;
+      const start = randomInt(minStart, maxStart);
+      const sequence = [start];
+      let ok = true;
+      for (let i = 1; i <= steps; i++) {
+        const value = start + signedStep * i;
+        if (!Number.isInteger(value) || value < 1 || value > STAIRS_MAX_VALUE) {
+          ok = false;
+          break;
+        }
+        sequence.push(value);
+      }
+      if (!ok) continue;
+      const end = sequence[sequence.length - 1];
+      if (end === start) continue;
+      return {
+        type: "numberStairs",
+        question: formatStairsQuestion(start, emptyCount, end),
+        blankFormat: true,
+        start,
+        end,
+        emptyCount,
+        nodes: sequence.map((value, index) =>
+          index === 0 || index === sequence.length - 1 ? value : null,
+        ),
+        answer: step,
+      };
+    }
+
+    // フォールバック: 上昇のみの単純な階段
+    const step = emptyCount + 1;
+    const start = 1;
+    const end = start + step * (emptyCount + 1);
+    return {
+      type: "numberStairs",
+      question: formatStairsQuestion(start, emptyCount, end),
+      blankFormat: true,
+      start,
+      end,
+      emptyCount,
+      nodes: [start, ...Array(emptyCount).fill(null), end],
+      answer: step,
+    };
+  }
+
+  function createNumberStairsProblems(problems) {
+    const emptyCounts = shuffle([1, 1, 1, 2, 2, 2, 2, 3, 3, 3]);
+    for (let i = 0; i < PROBLEM_COUNT_NUMBER_STAIRS; i++) {
+      problems.push(createNumberStairsProblem(emptyCounts[i]));
+    }
+  }
+
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
@@ -480,6 +550,15 @@
       problemCount: PROBLEM_COUNT_FOUR_PLACE_ONLY,
       remnantLabel: "Rem.",
       createProblems: createFourPlaceOnlyProblems,
+    },
+    stairs: {
+      label: "数字の階段",
+      summary: "数字の階段 10問",
+      type: "master",
+      storageKey: "bestRecordNumberStairs",
+      problemCount: PROBLEM_COUNT_NUMBER_STAIRS,
+      remnantLabel: "Rem.",
+      createProblems: createNumberStairsProblems,
     },
     imagetore: {
       label: "イメトレ",
