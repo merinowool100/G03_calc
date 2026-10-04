@@ -3,8 +3,8 @@
   const PROBLEM_COUNT_FOUR_PLACE = 8;
   const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
   const PROBLEM_COUNT_KUKU = 20;
-  const PROBLEM_COUNT_TEEN_TIMES = 10;
-  const PROBLEM_COUNT_TODAY = 56;
+  const PROBLEM_COUNT_TEEN_TIMES = 5;
+  const PROBLEM_COUNT_TODAY = 51;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
 
@@ -389,8 +389,9 @@
 
   function createTeenTimesProblems() {
     const pool = [];
+    // 12〜19 × 2 or 4 からランダム5問
     for (let a = 12; a <= 19; a++) {
-      for (let b = 2; b <= 5; b++) {
+      for (const b of [2, 4]) {
         pool.push(createProductBlankProblem(a, b));
       }
     }
@@ -464,7 +465,7 @@
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
-      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 56問",
+      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 51問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
