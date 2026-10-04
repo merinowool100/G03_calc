@@ -11,6 +11,7 @@
   let currentProblemIndex = 0;
   let isStarted = false;
   let isEnd = false;
+  let isResolving = false;
   let timerInterval = null;
   let ticks = 0;
   let paintedCells = new Set();
@@ -356,7 +357,7 @@
   }
 
   function appendNumber(numStr) {
-    if (!isStarted || isImagetore) return;
+    if (!isStarted || isImagetore || isResolving || isEnd) return;
     el("answerInput").value += numStr;
   }
 
@@ -364,50 +365,71 @@
     return isImagetore ? el("feedback") : el("feedback-calc");
   }
 
-  function showFeedback(isCorrect) {
-    const feedback = getFeedbackEl();
-    if (!feedback) return;
-    feedback.classList.remove(
-      "feedback-mark--correct",
-      "feedback-mark--wrong",
-      "feedback-text",
-    );
-    if (isImagetore) {
-      feedback.textContent = isCorrect ? "Correct" : "Wrong";
-      feedback.classList.add("feedback-text");
-      feedback.style.color = isCorrect ? "green" : "red";
-    } else {
-      feedback.textContent = isCorrect ? "○" : "×";
-      feedback.classList.add(
-        isCorrect ? "feedback-mark--correct" : "feedback-mark--wrong",
-      );
-      feedback.style.color = "";
+  function deferCurrentProblem() {
+    if (
+      currentProblemIndex < 0 ||
+      currentProblemIndex >= problems.length
+    ) {
+      return;
     }
-    feedback.style.display = "block";
-    feedback.classList.remove("hidden");
+    const incorrectProblem = problems.splice(currentProblemIndex, 1)[0];
+    if (incorrectProblem) problems.push(incorrectProblem);
+  }
+
+  function finishIfComplete(isCorrect) {
+    if (!isCorrect || currentProblemIndex < problems.length) {
+      showProblem();
+      return;
+    }
+    isEnd = true;
+    clearFourPlaceBoard();
+    el("problemDisplay").textContent = "";
+    setRemainingDisplay(0);
+    screenLock();
+    const best = writeBestIfBetter(ticks);
+    displayBestRecord(best);
+  }
+
+  function showFeedback(isCorrect) {
+    isResolving = true;
+    const feedback = getFeedbackEl();
+    if (feedback) {
+      feedback.classList.remove(
+        "feedback-mark--correct",
+        "feedback-mark--wrong",
+        "feedback-text",
+      );
+      if (isImagetore) {
+        feedback.textContent = isCorrect ? "Correct" : "Wrong";
+        feedback.classList.add("feedback-text");
+        feedback.style.color = isCorrect ? "green" : "red";
+      } else {
+        feedback.textContent = isCorrect ? "○" : "×";
+        feedback.classList.add(
+          isCorrect ? "feedback-mark--correct" : "feedback-mark--wrong",
+        );
+        feedback.style.color = "";
+      }
+      feedback.style.display = "block";
+      feedback.classList.remove("hidden");
+    }
 
     setTimeout(() => {
-      feedback.classList.add("hidden");
-      feedback.style.display = "none";
-      if (!isStarted || problems.length === 0) return;
-      const allAnswered = isCorrect && currentProblemIndex >= problems.length;
-      if (allAnswered) {
-        isEnd = true;
-        clearFourPlaceBoard();
-        el("problemDisplay").textContent = "";
-        setRemainingDisplay(0);
-        screenLock();
-        const best = writeBestIfBetter(ticks);
-        displayBestRecord(best);
-      } else {
-        showProblem();
+      if (feedback) {
+        feedback.classList.add("hidden");
+        feedback.style.display = "none";
       }
+      isResolving = false;
+      if (!isStarted || problems.length === 0) return;
+      finishIfComplete(isCorrect);
     }, 300);
   }
 
   function checkAnswer() {
-    if (!isStarted || problems.length === 0) return;
+    if (!isStarted || isEnd || isResolving || problems.length === 0) return;
+    if (currentProblemIndex >= problems.length) return;
     const currentProblem = problems[currentProblemIndex];
+    if (!currentProblem) return;
 
     if (isImagetore) {
       const a = currentProblem.factorA;
@@ -416,27 +438,25 @@
         currentProblemIndex++;
         showFeedback(true);
       } else {
-        const incorrectProblem = problems.splice(currentProblemIndex, 1)[0];
-        problems.push(incorrectProblem);
+        deferCurrentProblem();
         showFeedback(false);
       }
       return;
     }
 
-    const userAnswer = parseInt(el("answerInput").value, 10);
-    if (Number.isNaN(userAnswer)) {
-      showFeedback(false);
-      return;
-    }
+    const raw = String(el("answerInput").value || "").trim();
+    if (!raw) return;
+    const userAnswer = parseInt(raw, 10);
+    if (Number.isNaN(userAnswer)) return;
+
+    el("answerInput").value = "";
     if (userAnswer === currentProblem.answer) {
       currentProblemIndex++;
       showFeedback(true);
     } else {
-      const incorrectProblem = problems.splice(currentProblemIndex, 1)[0];
-      problems.push(incorrectProblem);
+      deferCurrentProblem();
       showFeedback(false);
     }
-    el("answerInput").value = "";
   }
 
   function updateTimer() {
