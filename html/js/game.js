@@ -536,6 +536,7 @@
     timerInterval = null;
     isStarted = false;
     isEnd = false;
+    isResolving = false;
     ticks = 0;
     currentProblemIndex = 0;
     problems.length = 0;
