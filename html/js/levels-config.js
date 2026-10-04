@@ -2,8 +2,9 @@
   const PROBLEM_COUNT_IMAGETORE = 10;
   const PROBLEM_COUNT_FOUR_PLACE = 8;
   const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
-  const PROBLEM_COUNT_KUKU = 40;
-  const PROBLEM_COUNT_TODAY = 66;
+  const PROBLEM_COUNT_KUKU = 20;
+  const PROBLEM_COUNT_TEEN_TIMES = 10;
+  const PROBLEM_COUNT_TODAY = 56;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
 
@@ -359,30 +360,41 @@
     };
   }
 
+  function createProductBlankProblem(a, b) {
+    const product = a * b;
+    // 例: 18 = 2 × □ / 63 = □ × 9
+    if (Math.random() < 0.5) {
+      return {
+        question: `${product} = ${a} × □`,
+        answer: b,
+        blankFormat: true,
+      };
+    }
+    return {
+      question: `${product} = □ × ${b}`,
+      answer: a,
+      blankFormat: true,
+    };
+  }
+
   function createKukuProblems() {
-    const problems = [];
-    // 2〜9の各段から5問。例: 18 = 2 × □ / 63 = □ × 9
-    for (let table = 2; table <= 9; table++) {
-      const others = shuffle([2, 3, 4, 5, 6, 7, 8, 9]).slice(0, 5);
-      for (let i = 0; i < others.length; i++) {
-        const other = others[i];
-        const product = table * other;
-        if (Math.random() < 0.5) {
-          problems.push({
-            question: `${product} = ${table} × □`,
-            answer: other,
-            blankFormat: true,
-          });
-        } else {
-          problems.push({
-            question: `${product} = □ × ${other}`,
-            answer: table,
-            blankFormat: true,
-          });
-        }
+    const pool = [];
+    for (let a = 2; a <= 9; a++) {
+      for (let b = 2; b <= 9; b++) {
+        pool.push(createProductBlankProblem(a, b));
       }
     }
-    return shuffle(problems);
+    return shuffle(pool).slice(0, PROBLEM_COUNT_KUKU);
+  }
+
+  function createTeenTimesProblems() {
+    const pool = [];
+    for (let a = 12; a <= 19; a++) {
+      for (let b = 2; b <= 5; b++) {
+        pool.push(createProductBlankProblem(a, b));
+      }
+    }
+    return shuffle(pool).slice(0, PROBLEM_COUNT_TEEN_TIMES);
   }
 
   function createSpecialMultiplicationProblems() {
@@ -443,15 +455,16 @@
   function createTodayChallengeProblems(problems) {
     const fourPlace = createFourPlaceProblems(PROBLEM_COUNT_FOUR_PLACE);
     const kuku = createKukuProblems();
+    const teenTimes = createTeenTimesProblems();
     const special = createSpecialMultiplicationProblems();
     const addSub = createTwoDigitAddSubProblems();
-    problems.push(...fourPlace, ...kuku, ...special, ...addSub);
+    problems.push(...fourPlace, ...kuku, ...teenTimes, ...special, ...addSub);
   }
 
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
-      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 66問",
+      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 56問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
