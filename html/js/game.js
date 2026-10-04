@@ -383,16 +383,7 @@
       row.appendChild(circle);
     }
 
-    const equation = document.createElement("div");
-    equation.className = "stairs-equation";
-    equation.setAttribute("aria-label", "段差を答える");
-    equation.innerHTML =
-      '<span class="stairs-equation__q">?</span>' +
-      '<span class="stairs-equation__eq">=</span>' +
-      '<span class="stairs-equation__blank">▫︎</span>';
-
     board.appendChild(row);
-    board.appendChild(equation);
 
     board.hidden = false;
     board.setAttribute("aria-hidden", "false");
