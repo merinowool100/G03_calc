@@ -290,6 +290,15 @@
     return Boolean(problem && problem.type === "numberStairs");
   }
 
+  function setStairsAnswerPromptVisible(visible) {
+    ["stairsAnswerPrompt", "stairsAnswerEquals"].forEach((id) => {
+      const node = el(id);
+      if (!node) return;
+      node.hidden = !visible;
+      node.setAttribute("aria-hidden", visible ? "false" : "true");
+    });
+  }
+
   function clearSpecialBoards() {
     const fourPlaceBoard = el("fourPlaceBoard");
     const stairsBoard = el("stairsBoard");
@@ -304,6 +313,7 @@
       stairsBoard.hidden = true;
       stairsBoard.setAttribute("aria-hidden", "true");
     }
+    setStairsAnswerPromptVisible(false);
     if (container) {
       container.classList.remove("is-four-place", "is-stairs");
     }
@@ -387,6 +397,7 @@
 
     board.hidden = false;
     board.setAttribute("aria-hidden", "false");
+    setStairsAnswerPromptVisible(true);
     if (display) {
       display.textContent = "";
       display.hidden = true;

@@ -410,18 +410,27 @@ html[data-play-mode="imagetore"] .canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35em;
+  gap: 0.4em;
   width: 100%;
 }
 
-#problemDisplayContainer.is-stairs #answerArea::before {
-  content: "? =";
+.stairs-answer-prompt,
+.stairs-answer-prompt[hidden],
+.stairs-answer-equals,
+.stairs-answer-equals[hidden] {
+  display: none !important;
+}
+
+#problemDisplayContainer.is-stairs .stairs-answer-prompt:not([hidden]),
+#problemDisplayContainer.is-stairs .stairs-answer-equals:not([hidden]) {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 auto;
   font-size: clamp(28px, 5.6vmin, 42px);
   font-weight: 800;
   line-height: 1;
   color: #2a2a2a;
-  letter-spacing: 0.04em;
   white-space: nowrap;
 }
 
@@ -941,7 +950,8 @@ html[data-play-mode="imagetore"] #feedback-calc {
     height: 3px;
   }
 
-  #problemDisplayContainer.is-stairs #answerArea::before {
+  #problemDisplayContainer.is-stairs .stairs-answer-prompt:not([hidden]),
+  #problemDisplayContainer.is-stairs .stairs-answer-equals:not([hidden]) {
     font-size: clamp(22px, 5.4vw, 32px);
   }
 
