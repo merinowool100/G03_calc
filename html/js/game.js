@@ -290,6 +290,15 @@
     return Boolean(problem && problem.type === "numberStairs");
   }
 
+  function setStairsAnswerPromptVisible(visible) {
+    ["stairsAnswerPrompt", "stairsAnswerEquals"].forEach((id) => {
+      const node = el(id);
+      if (!node) return;
+      node.hidden = !visible;
+      node.setAttribute("aria-hidden", visible ? "false" : "true");
+    });
+  }
+
   function clearSpecialBoards() {
     const fourPlaceBoard = el("fourPlaceBoard");
     const stairsBoard = el("stairsBoard");
@@ -304,6 +313,7 @@
       stairsBoard.hidden = true;
       stairsBoard.setAttribute("aria-hidden", "true");
     }
+    setStairsAnswerPromptVisible(false);
     if (container) {
       container.classList.remove("is-four-place", "is-stairs");
     }
@@ -364,6 +374,9 @@
     board.innerHTML = "";
     const row = document.createElement("div");
     row.className = "stairs-row";
+    const steps = document.createElement("div");
+    steps.className = "stairs-steps";
+    steps.setAttribute("aria-hidden", "true");
 
     for (let i = 0; i < nodes.length; i++) {
       if (i > 0) {
@@ -372,6 +385,7 @@
         connector.setAttribute("aria-hidden", "true");
         row.appendChild(connector);
       }
+
       const circle = document.createElement("div");
       circle.className = "stairs-circle";
       const value = nodes[i];
@@ -381,20 +395,24 @@
         circle.textContent = String(value);
       }
       row.appendChild(circle);
+
+      const spacer = document.createElement("div");
+      spacer.className = "stairs-step-spacer";
+      steps.appendChild(spacer);
+      if (i < nodes.length - 1) {
+        const step = document.createElement("div");
+        step.className = "stairs-step";
+        step.textContent = "?";
+        steps.appendChild(step);
+      }
     }
 
-    const hint = document.createElement("div");
-    hint.className = "stairs-hint";
-    const marks = Array(nodes.length - 1)
-      .fill("?")
-      .join("　　");
-    hint.textContent = marks;
-
     board.appendChild(row);
-    board.appendChild(hint);
+    board.appendChild(steps);
 
     board.hidden = false;
     board.setAttribute("aria-hidden", "false");
+    setStairsAnswerPromptVisible(true);
     if (display) {
       display.textContent = "";
       display.hidden = true;
