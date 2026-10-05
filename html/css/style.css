@@ -459,13 +459,15 @@ html[data-play-mode="imagetore"] .canvas {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   grid-area: board;
   width: min(92%, 420px);
-  min-height: min(22vmin, 120px);
+  min-height: min(28vmin, 148px);
   box-sizing: border-box;
 }
 
-.stairs-row {
+.stairs-row,
+.stairs-steps {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -473,9 +475,13 @@ html[data-play-mode="imagetore"] .canvas {
   width: 100%;
 }
 
-.stairs-circle {
+.stairs-circle,
+.stairs-step-spacer {
   flex: 0 0 auto;
   width: clamp(42px, 9vmin, 64px);
+}
+
+.stairs-circle {
   height: clamp(42px, 9vmin, 64px);
   border: 3px solid #2f2f2f;
   border-radius: 50%;
@@ -494,13 +500,28 @@ html[data-play-mode="imagetore"] .canvas {
   background: #ffffff;
 }
 
-.stairs-connector {
+.stairs-connector,
+.stairs-step {
   flex: 1 1 18px;
   min-width: 14px;
   max-width: 36px;
+}
+
+.stairs-connector {
   height: 4px;
   background: #2f2f2f;
   border-radius: 999px;
+}
+
+.stairs-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.1em;
+  font-size: clamp(18px, 3.8vmin, 26px);
+  font-weight: 800;
+  line-height: 1;
+  color: #8a7350;
 }
 
 .four-place-cell {
@@ -937,17 +958,29 @@ html[data-play-mode="imagetore"] #feedback-calc {
     min-height: 0;
   }
 
-  #problemDisplayContainer.is-stairs .stairs-circle {
+  #problemDisplayContainer.is-stairs .stairs-circle,
+  #problemDisplayContainer.is-stairs .stairs-step-spacer {
     width: clamp(34px, 9vw, 48px);
+  }
+
+  #problemDisplayContainer.is-stairs .stairs-circle {
     height: clamp(34px, 9vw, 48px);
     font-size: clamp(15px, 4vw, 22px);
     border-width: 2px;
   }
 
-  #problemDisplayContainer.is-stairs .stairs-connector {
+  #problemDisplayContainer.is-stairs .stairs-connector,
+  #problemDisplayContainer.is-stairs .stairs-step {
     min-width: 8px;
     max-width: 20px;
+  }
+
+  #problemDisplayContainer.is-stairs .stairs-connector {
     height: 3px;
+  }
+
+  #problemDisplayContainer.is-stairs .stairs-step {
+    font-size: clamp(14px, 3.6vw, 20px);
   }
 
   #problemDisplayContainer.is-stairs .stairs-answer-prompt:not([hidden]),

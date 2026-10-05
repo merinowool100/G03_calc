@@ -374,6 +374,9 @@
     board.innerHTML = "";
     const row = document.createElement("div");
     row.className = "stairs-row";
+    const steps = document.createElement("div");
+    steps.className = "stairs-steps";
+    steps.setAttribute("aria-hidden", "true");
 
     for (let i = 0; i < nodes.length; i++) {
       if (i > 0) {
@@ -382,6 +385,7 @@
         connector.setAttribute("aria-hidden", "true");
         row.appendChild(connector);
       }
+
       const circle = document.createElement("div");
       circle.className = "stairs-circle";
       const value = nodes[i];
@@ -391,9 +395,20 @@
         circle.textContent = String(value);
       }
       row.appendChild(circle);
+
+      const spacer = document.createElement("div");
+      spacer.className = "stairs-step-spacer";
+      steps.appendChild(spacer);
+      if (i < nodes.length - 1) {
+        const step = document.createElement("div");
+        step.className = "stairs-step";
+        step.textContent = "?";
+        steps.appendChild(step);
+      }
     }
 
     board.appendChild(row);
+    board.appendChild(steps);
 
     board.hidden = false;
     board.setAttribute("aria-hidden", "false");
