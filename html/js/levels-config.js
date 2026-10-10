@@ -3,9 +3,10 @@
   const PROBLEM_COUNT_FOUR_PLACE = 8;
   const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
   const PROBLEM_COUNT_NUMBER_STAIRS = 10;
+  const PROBLEM_COUNT_TODAY_STAIRS = 3;
   const PROBLEM_COUNT_KUKU = 20;
   const PROBLEM_COUNT_TEEN_TIMES = 5;
-  const PROBLEM_COUNT_TODAY = 51;
+  const PROBLEM_COUNT_TODAY = 54;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
   const STAIRS_MAX_VALUE = 99;
@@ -458,11 +459,19 @@
 
   function createTodayChallengeProblems(problems) {
     const fourPlace = createFourPlaceProblems(PROBLEM_COUNT_FOUR_PLACE);
+    const stairs = createNumberStairsProblemList(PROBLEM_COUNT_TODAY_STAIRS);
     const kuku = createKukuProblems();
     const teenTimes = createTeenTimesProblems();
     const special = createSpecialMultiplicationProblems();
     const addSub = createTwoDigitAddSubProblems();
-    problems.push(...fourPlace, ...kuku, ...teenTimes, ...special, ...addSub);
+    problems.push(
+      ...fourPlace,
+      ...stairs,
+      ...kuku,
+      ...teenTimes,
+      ...special,
+      ...addSub,
+    );
   }
 
   function formatStairsQuestion(start, emptyCount, end) {
@@ -525,17 +534,30 @@
     };
   }
 
-  function createNumberStairsProblems(problems) {
-    const emptyCounts = shuffle([1, 1, 1, 2, 2, 2, 2, 3, 3, 3]);
-    for (let i = 0; i < PROBLEM_COUNT_NUMBER_STAIRS; i++) {
-      problems.push(createNumberStairsProblem(emptyCounts[i]));
+  function createNumberStairsProblemList(count) {
+    const targetCount = count || PROBLEM_COUNT_NUMBER_STAIRS;
+    const emptyCounts = [];
+    if (targetCount === PROBLEM_COUNT_TODAY_STAIRS) {
+      emptyCounts.push(...shuffle([1, 2, 3]));
+    } else {
+      const pattern = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3];
+      while (emptyCounts.length < targetCount) {
+        emptyCounts.push(...shuffle(pattern.slice()));
+      }
+      emptyCounts.length = targetCount;
     }
+    return emptyCounts.map((emptyCount) => createNumberStairsProblem(emptyCount));
+  }
+
+  function createNumberStairsProblems(problems) {
+    problems.push(...createNumberStairsProblemList(PROBLEM_COUNT_NUMBER_STAIRS));
   }
 
   window.GAME_MODES = {
     today: {
       label: "今日のチャレンジ",
-      summary: "フォープレイス・九九穴埋め・特殊な掛け算・2桁の加減 51問",
+      summary:
+        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁の加減 54問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
