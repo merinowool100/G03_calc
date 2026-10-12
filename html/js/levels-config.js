@@ -1,12 +1,12 @@
 (function () {
   const PROBLEM_COUNT_IMAGETORE = 10;
-  const PROBLEM_COUNT_FOUR_PLACE = 8;
+  const PROBLEM_COUNT_FOUR_PLACE = 5;
   const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
   const PROBLEM_COUNT_NUMBER_STAIRS = 10;
   const PROBLEM_COUNT_TODAY_STAIRS = 3;
-  const PROBLEM_COUNT_KUKU = 20;
+  const PROBLEM_COUNT_KUKU = 10;
   const PROBLEM_COUNT_TEEN_TIMES = 5;
-  const PROBLEM_COUNT_TODAY = 54;
+  const PROBLEM_COUNT_TODAY = 47;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
   const STAIRS_MAX_VALUE = 99;
@@ -446,13 +446,56 @@
       createTwoDigitAddition(true),
       createTwoDigitAddition(true),
       createTwoDigitAddition(true),
-      createTwoDigitAddition(true),
-      createTwoDigitAddition(false),
       createTwoDigitSubtraction(true),
       createTwoDigitSubtraction(true),
       createTwoDigitSubtraction(true),
       createTwoDigitSubtraction(true),
-      createTwoDigitSubtraction(false),
+      createTwoDigitSubtraction(true),
+      createTwoDigitSubtraction(true),
+    ];
+    return shuffle(problems);
+  }
+
+  function createThreeDigitAdditionWithCarry() {
+    let a;
+    let b;
+    do {
+      a = randomInt(100, 999);
+      b = Math.random() < 0.5 ? randomInt(10, 99) : randomInt(100, 999);
+      const onesCarry = (a % 10) + (b % 10) >= 10;
+      if (onesCarry) break;
+    } while (true);
+    return {
+      question: `${a} + ${b}`,
+      answer: a + b,
+    };
+  }
+
+  function createThreeDigitSubtractionWithBorrow() {
+    let a;
+    let b;
+    do {
+      a = randomInt(100, 999);
+      b = randomInt(100, 999);
+      if (a < b) continue;
+      const onesBorrow = a % 10 < b % 10;
+      if (onesBorrow) break;
+    } while (true);
+    return {
+      question: `${a} − ${b}`,
+      answer: a - b,
+    };
+  }
+
+  function createThreeDigitAddSubProblems() {
+    const problems = [
+      createThreeDigitAdditionWithCarry(),
+      createThreeDigitAdditionWithCarry(),
+      createThreeDigitSubtractionWithBorrow(),
+      createThreeDigitSubtractionWithBorrow(),
+      createThreeDigitSubtractionWithBorrow(),
+      createThreeDigitSubtractionWithBorrow(),
+      createThreeDigitSubtractionWithBorrow(),
     ];
     return shuffle(problems);
   }
@@ -463,14 +506,16 @@
     const kuku = createKukuProblems();
     const teenTimes = createTeenTimesProblems();
     const special = createSpecialMultiplicationProblems();
-    const addSub = createTwoDigitAddSubProblems();
+    const twoDigitAddSub = createTwoDigitAddSubProblems();
+    const threeDigitAddSub = createThreeDigitAddSubProblems();
     problems.push(
       ...fourPlace,
       ...stairs,
       ...kuku,
       ...teenTimes,
       ...special,
-      ...addSub,
+      ...twoDigitAddSub,
+      ...threeDigitAddSub,
     );
   }
 
@@ -557,7 +602,7 @@
     today: {
       label: "今日のチャレンジ",
       summary:
-        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁の加減 54問",
+        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁/3桁の加減 47問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
