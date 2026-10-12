@@ -393,9 +393,9 @@
 
   function createTeenTimesProblems() {
     const pool = [];
-    // 12〜19 × 2 or 4 からランダム5問
+    // 12〜19 × 2/3/4/5 からランダム8問
     for (let a = 12; a <= 19; a++) {
-      for (const b of [2, 4]) {
+      for (const b of [2, 3, 4, 5]) {
         pool.push(createProductBlankProblem(a, b));
       }
     }
@@ -602,7 +602,7 @@
     today: {
       label: "今日のチャレンジ",
       summary:
-        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁/3桁の加減 47問",
+        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁/3桁の加減 50問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
