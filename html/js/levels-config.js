@@ -4,9 +4,10 @@
   const PROBLEM_COUNT_FOUR_PLACE_ONLY = 10;
   const PROBLEM_COUNT_NUMBER_STAIRS = 10;
   const PROBLEM_COUNT_TODAY_STAIRS = 3;
-  const PROBLEM_COUNT_KUKU = 10;
+  const PROBLEM_COUNT_KUKU = 8;
   const PROBLEM_COUNT_TEEN_TIMES = 8;
-  const PROBLEM_COUNT_TODAY = 60;
+  const PROBLEM_COUNT_SPECIAL = 5;
+  const PROBLEM_COUNT_TODAY = 45;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
   const STAIRS_MAX_VALUE = 99;
@@ -417,7 +418,7 @@
       question: `${a} × ${b}`,
       answer: a * b,
     }));
-    return shuffle(pool);
+    return shuffle(pool).slice(0, PROBLEM_COUNT_SPECIAL);
   }
 
   function createTwoDigitAddition(withCarry) {
@@ -612,7 +613,7 @@
     today: {
       label: "今日のチャレンジ",
       summary:
-        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁/3桁の加減 60問",
+        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁/3桁の加減 45問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
