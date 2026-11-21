@@ -655,7 +655,7 @@ html[data-play-mode="imagetore"] #feedback-calc {
   font-weight: 800;
   font-size: clamp(16px, 3vmin, 22px);
   color: var(--text);
-  background: linear-gradient(180deg, #ffffff, #f7f0e4);
+  background: #ffffff;
   box-shadow: var(--shadow-sm);
   transition:
     transform 0.14s ease,
