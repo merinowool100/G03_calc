@@ -694,7 +694,7 @@ html[data-play-mode="imagetore"] #feedback-calc {
   margin-top: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: repeat(5, minmax(56px, 1fr));
+  grid-template-rows: repeat(4, minmax(56px, 1fr));
   gap: 14px;
   align-content: stretch;
 }
@@ -769,19 +769,19 @@ html[data-play-mode="imagetore"] #feedback-calc {
   grid-row: 4;
 }
 
+#clearButton {
+  grid-column: 2;
+  grid-row: 4;
+  background: linear-gradient(180deg, #908c87, #6c6762);
+  color: #fff;
+}
+
 #submitAnswerButton {
-  grid-column: 2 / 4;
+  grid-column: 3;
   grid-row: 4;
   background: linear-gradient(180deg, #53c95d, #2f9445);
   color: #fff;
   border-color: rgba(36, 121, 73, 0.18);
-}
-
-#clearButton {
-  grid-column: 1 / 4;
-  grid-row: 5;
-  background: linear-gradient(180deg, #908c87, #6c6762);
-  color: #fff;
 }
 
 .numbtn {
@@ -1054,7 +1054,7 @@ html[data-play-mode="imagetore"] #feedback-calc {
     gap: 6px;
     flex: 1 1 auto;
     min-height: 0;
-    grid-template-rows: repeat(5, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
   }
 
   #numberButtons button {
