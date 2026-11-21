@@ -6,7 +6,7 @@
   const PROBLEM_COUNT_TODAY_STAIRS = 3;
   const PROBLEM_COUNT_KUKU = 10;
   const PROBLEM_COUNT_TEEN_TIMES = 8;
-  const PROBLEM_COUNT_TODAY = 50;
+  const PROBLEM_COUNT_TODAY = 60;
   const FOUR_PLACE_SIZE = 4;
   const FOUR_PLACE_BOX = 2;
   const STAIRS_MAX_VALUE = 99;
@@ -16,11 +16,21 @@
     { a: 11, b: 11 },
     { a: 12, b: 12 },
     { a: 13, b: 13 },
+    { a: 14, b: 14 },
+    { a: 15, b: 15 },
+    { a: 16, b: 16 },
+    { a: 17, b: 17 },
+    { a: 18, b: 18 },
+    { a: 19, b: 19 },
     { a: 25, b: 4 },
     { a: 25, b: 8 },
     { a: 50, b: 2 },
     { a: 50, b: 4 },
+    { a: 64, b: 2 },
     { a: 75, b: 2 },
+    { a: 128, b: 2 },
+    { a: 256, b: 2 },
+    { a: 512, b: 2 },
   ];
 
   // 添付写真の空きマス・赤マス配置（数字は毎回ランダム）
@@ -602,7 +612,7 @@
     today: {
       label: "今日のチャレンジ",
       summary:
-        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁/3桁の加減 50問",
+        "フォープレイス・数字の階段・九九穴埋め・特殊な掛け算・2桁/3桁の加減 60問",
       type: "master",
       storageKey: "bestRecordTodayChallenge",
       problemCount: PROBLEM_COUNT_TODAY,
